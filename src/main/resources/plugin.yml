@@ -1,0 +1,21 @@
+name: SuperFactions
+version: ${project.version}
+main: com.github.imdabigboss.superfactions.SuperFactions
+api-version: 1.15
+
+commands:
+  superfactions:
+    description: The main Super Factions command
+    usage: /superfactions <save/reload/info>
+    permission: superfactions.admin
+  balance:
+    description: Get your balance
+    usage: /balance
+  money:
+    description: Make transactions
+    usage: /money
+
+permissions:
+  superfactions.admin:
+    default: op
+    description: If a player has admin permissions
