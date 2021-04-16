@@ -1,5 +1,10 @@
 package com.github.imdabigboss.superfactions;
 
+import com.github.imdabigboss.superfactions.shop.ShopGUI;
+
+import net.jitse.npclib.api.events.NPCInteractEvent;
+
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,5 +22,15 @@ public class EventListener implements Listener {
         Player player = event.getPlayer();
         plugin.getConfig().set("registeredPlayers." + player.getName(), player.getUniqueId().toString());
         plugin.saveConfig();
+
+        SuperFactions.getShopNPC().showNPC(player);
+    }
+
+    @EventHandler
+    public void onNPCInteract(NPCInteractEvent event) {
+        if (event.getNPC().getId().equalsIgnoreCase(plugin.getShopNPC().getNPCID())) {
+            event.getWhoClicked().sendMessage(ChatColor.AQUA + "Welcome to the shop!");
+            ShopGUI.openShop(event.getWhoClicked());
+        }
     }
 }

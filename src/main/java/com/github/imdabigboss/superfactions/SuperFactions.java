@@ -6,8 +6,11 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import com.github.imdabigboss.superfactions.commands.*;
-
 import com.github.imdabigboss.superfactions.shop.ItemPrices;
+
+import com.github.imdabigboss.superfactions.shop.ShopNPC;
+import net.jitse.npclib.NPCLib;
+
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -19,6 +22,8 @@ public class SuperFactions extends JavaPlugin {
     private static SuperFactions instance = null;
     private static Economy economy = null;
     private static ItemPrices prices = null;
+    private static NPCLib npcLib;
+    private static ShopNPC shopNPC;
 
     public static String currencyPrefix = "$";
     public static String currencySuffix = "";
@@ -30,9 +35,11 @@ public class SuperFactions extends JavaPlugin {
         log.info(String.format("[%s] Enabled Version %s", getDescription().getName(), getDescription().getVersion()));
         economy = new Economy(this);
         prices = new ItemPrices();
+        npcLib = new NPCLib(this);
+        shopNPC = new ShopNPC(this);
 
         if (getConfig().contains("version")) {
-            if (getConfig().getString("version") != getDescription().getVersion()) {
+            if (!getConfig().getString("version").equalsIgnoreCase(getDescription().getVersion())) {
                 log.warning("Your config is not up to date, please regenerate it! You are using " + getConfig().getString("version") + " and the current version is " + getDescription().getVersion());
             }
         } else {
@@ -50,10 +57,14 @@ public class SuperFactions extends JavaPlugin {
         this.getCommand("superfactions").setExecutor(new SuperFactionsCommand(this));
         this.getCommand("balance").setExecutor(new BalanceCommand(this));
         this.getCommand("money").setExecutor(new MoneyCommand(this));
+        this.getCommand("shop").setExecutor(new ShopCommand(this));
+
+        shopNPC.createNPC();
     }
 
     @Override
     public void onDisable() {
+        shopNPC.destoryNPC();
         economy.saveBalance();
         log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
     }
@@ -126,6 +137,12 @@ public class SuperFactions extends JavaPlugin {
     }
     public static ItemPrices getPrices() {
         return prices;
+    }
+    public static NPCLib getNPC() {
+        return npcLib;
+    }
+    public static ShopNPC getShopNPC() {
+        return shopNPC;
     }
     public static SuperFactions getInstance() {
         return instance;

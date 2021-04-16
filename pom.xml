@@ -38,6 +38,10 @@
                             <pattern>de.themoep</pattern>
                             <shadedPattern>com.github.imdabigboss.superfactions.libs</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>net.jitse.npclib</pattern>
+                            <shadedPattern>com.github.imdabigboss.superfactions.libs</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -74,6 +78,10 @@
             <id>minebench-repo</id>
             <url>https://repo.minebench.de/</url>
         </repository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -87,6 +95,17 @@
             <groupId>de.themoep</groupId>
             <artifactId>inventorygui</artifactId>
             <version>1.4.3-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.jitse</groupId>
+            <artifactId>npclib-api</artifactId>
+            <version>2.11.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency><dependency>
+            <groupId>net.jitse</groupId>
+            <artifactId>npclib-plugin</artifactId>
+            <version>2.11.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

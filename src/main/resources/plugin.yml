@@ -14,6 +14,10 @@ commands:
   money:
     description: Make transactions
     usage: /money
+  shop:
+    description: The shop command
+    usage: /shop [setpos]
+    permission: superfactions.admin
 
 permissions:
   superfactions.admin:
