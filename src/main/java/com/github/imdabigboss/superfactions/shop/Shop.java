@@ -29,7 +29,7 @@ public class Shop {
         if (price <= SuperFactions.getEconomy().getPlayerBalance(oplayer)) {
             SuperFactions.getEconomy().playerWithdraw(oplayer, price);
             player.getInventory().addItem(item);
-            player.sendMessage(ChatColor.AQUA + "You baught " + amount + "x " + Shop.formatItemName(item) + " for " + SuperFactions.getEconomy().formatMoney(price) + "!");
+            player.sendMessage(ChatColor.AQUA + "You bought " + amount + "x " + Shop.formatItemName(item) + " for " + SuperFactions.getEconomy().formatMoney(price) + "!");
         } else {
             player.sendMessage(ChatColor.RED + "You don't have enough money to buy that!");
         }

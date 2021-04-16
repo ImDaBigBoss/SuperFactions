@@ -4,21 +4,21 @@ import org.bukkit.Material;
 
 public class BuyGUIDetails {
     private Material[] items;
-    private Material thumnalItem;
+    private Material thumbnailItem;
     private String name;
 
-    public BuyGUIDetails(Material[] items, Material thumnalItem, String name) {
+    public BuyGUIDetails(Material[] items, Material thumbnailItem, String name) {
         this.items = items;
-        this.thumnalItem = thumnalItem;
+        this.thumbnailItem = thumbnailItem;
         this.name = name;
     }
 
     public BuyGUIDetails(Material[] items, String name) {
         this.items = items;
         if (items.length >= 1) {
-            this.thumnalItem = items[0];
+            this.thumbnailItem = items[0];
         } else {
-            this.thumnalItem = Material.AIR;
+            this.thumbnailItem = Material.AIR;
         }
         this.name = name;
     }
@@ -30,11 +30,11 @@ public class BuyGUIDetails {
         this.items = items;
     }
 
-    public Material getThumnalItem() {
-        return thumnalItem;
+    public Material getThumbnailItem() {
+        return thumbnailItem;
     }
-    public void setThumnalItem(Material thumnalItem) {
-        this.thumnalItem = thumnalItem;
+    public void setThumbnailItem(Material thumbnailItem) {
+        this.thumbnailItem = thumbnailItem;
     }
 
     public String getName() {

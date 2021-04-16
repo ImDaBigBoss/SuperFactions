@@ -61,7 +61,7 @@ public class ShopNPC {
     }
 
     /**
-     * Destory the shop NPC
+     * Destroy the shop NPC
      */
     public void destoryNPC() {
         if (!npcExists) {

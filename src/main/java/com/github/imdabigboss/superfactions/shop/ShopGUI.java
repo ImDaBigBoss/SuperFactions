@@ -283,7 +283,7 @@ public class ShopGUI {
         buyGui.addElement(new GuiPageElement('b', new ItemStack(Material.ARROW), GuiPageElement.PageAction.PREVIOUS, "Go to previous page (%prevpage%)"));
         buyGui.addElement(new GuiPageElement('f', new ItemStack(Material.ARROW), GuiPageElement.PageAction.NEXT, "Go to next page (%nextpage%)"));
 
-        buyGui.addElement(new StaticGuiElement('a', new ItemStack(details.getThumnalItem()), details.getName() + " items"));
+        buyGui.addElement(new StaticGuiElement('a', new ItemStack(details.getThumbnailItem()), details.getName() + " items"));
         buyGui.addElement(new StaticGuiElement('h', new ItemStack(backItem), click -> {
             buyGui.playClickSound();
             buyGui.close();
