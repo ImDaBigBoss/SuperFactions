@@ -1,7 +1,7 @@
 name: SuperFactions
 version: ${project.version}
 main: com.github.imdabigboss.superfactions.SuperFactions
-api-version: 1.15
+api-version: 1.16
 
 commands:
   superfactions:

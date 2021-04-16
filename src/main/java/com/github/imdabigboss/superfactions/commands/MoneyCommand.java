@@ -54,6 +54,10 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
                     SuperFactions.getEconomy().playerWithdraw(plugin.getOfflinePlayer((Player)sender), amount);
                     SuperFactions.getEconomy().playerDeposit(player, amount);
                     sender.sendMessage(ChatColor.AQUA + "You sent " + SuperFactions.getEconomy().formatMoney(amount) + " to " + args[1] + "'s account!");
+                    Player p = plugin.getServer().getPlayer(args[1]);
+                    if (p != null) {
+                        p.sendMessage(ChatColor.AQUA + sender.getName() + " sent you " + SuperFactions.getEconomy().formatMoney(amount));
+                    }
                 } else {
                     sender.sendMessage(ChatColor.RED + "That player is not registered!");
                 }

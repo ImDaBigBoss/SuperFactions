@@ -32,6 +32,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>de.themoep</pattern>
+                            <shadedPattern>com.github.imdabigboss.superfactions.libs</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -62,14 +70,24 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>minebench-repo</id>
+            <url>https://repo.minebench.de/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.themoep</groupId>
+            <artifactId>inventorygui</artifactId>
+            <version>1.4.3-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

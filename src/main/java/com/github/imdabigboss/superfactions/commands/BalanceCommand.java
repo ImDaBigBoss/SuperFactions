@@ -1,6 +1,7 @@
 package com.github.imdabigboss.superfactions.commands;
 
 import com.github.imdabigboss.superfactions.SuperFactions;
+import com.github.imdabigboss.superfactions.shop.ShopGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -26,6 +27,7 @@ public class BalanceCommand implements CommandExecutor {
         OfflinePlayer player = plugin.getOfflinePlayer((Player) sender);
         double balance = SuperFactions.getEconomy().getPlayerBalance(player);
         sender.sendMessage(ChatColor.AQUA + "You have a balance of " + SuperFactions.getEconomy().formatMoney(balance));
+        ShopGUI.openShop((Player) sender);
         return true;
     }
 }

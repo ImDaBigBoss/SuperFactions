@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.github.imdabigboss.superfactions.commands.*;
 
+import com.github.imdabigboss.superfactions.shop.ItemPrices;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -15,19 +16,24 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class SuperFactions extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
+    private static SuperFactions instance = null;
     private static Economy economy = null;
+    private static ItemPrices prices = null;
+
     public static String currencyPrefix = "$";
     public static String currencySuffix = "";
 
     @Override
     public void onEnable() {
+        instance = this;
         saveDefaultConfig();
         log.info(String.format("[%s] Enabled Version %s", getDescription().getName(), getDescription().getVersion()));
         economy = new Economy(this);
+        prices = new ItemPrices();
 
         if (getConfig().contains("version")) {
             if (getConfig().getString("version") != getDescription().getVersion()) {
-                log.warning("Your config is not up to date, please regenerate it!");
+                log.warning("Your config is not up to date, please regenerate it! You are using " + getConfig().getString("version") + " and the current version is " + getDescription().getVersion());
             }
         } else {
             log.warning("Your config has no version string, please regenerate it!");
@@ -117,5 +123,11 @@ public class SuperFactions extends JavaPlugin {
     }
     public static Economy getEconomy() {
         return economy;
+    }
+    public static ItemPrices getPrices() {
+        return prices;
+    }
+    public static SuperFactions getInstance() {
+        return instance;
     }
 }
