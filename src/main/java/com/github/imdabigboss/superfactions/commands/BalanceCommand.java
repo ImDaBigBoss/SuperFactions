@@ -21,7 +21,7 @@ public class BalanceCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("You must be a player to use this command");
+            sender.sendMessage(ChatColor.RED + "You must be a player to use this command");
             return true;
         }
 

@@ -18,12 +18,20 @@ public class ShopNPC {
     private NPC npc;
     private boolean npcExists = false;
     private String npcID = "";
+    private String npcName = "Merchant";
 
     public ShopNPC(SuperFactions plugin) {
         this.plugin = plugin;
         this.npcLib = plugin.getNPC();
+
+        if (plugin.getConfig().contains("shopNPCName")) {
+            npcName = plugin.getConfig().getString("shopNPCName");
+        }
     }
 
+    /**
+     * Create the shop NPC
+     */
     public void createNPC() {
         if (!plugin.getConfig().contains("shopNPCLocation")) {
             plugin.getLog().severe("You need to set an NPC location using /shop setpos");
@@ -37,9 +45,9 @@ public class ShopNPC {
         Location location = (Location) plugin.getConfig().get("shopNPCLocation");
 
         List<String> text = new ArrayList<>();
-        text.add("Merchant");
+        text.add(npcName);
 
-        MineSkinFetcher.fetchSkinFromIdSync(plugin.getConfig().getInt("shopNPCSkin"), skin -> {
+        MineSkinFetcher.fetchSkinFromIdSync(plugin.getConfig().getInt("shopNPCSkin"), skin -> { //Skin id for mineskin.org
             npc = npcLib.createNPC(text);
             npc.setLocation(location);
             npcID = npc.getId();
@@ -52,6 +60,9 @@ public class ShopNPC {
         });
     }
 
+    /**
+     * Destory the shop NPC
+     */
     public void destoryNPC() {
         if (!npcExists) {
             return;
@@ -62,11 +73,18 @@ public class ShopNPC {
         plugin.getLog().info(String.format("[%s] Destroyed shop NPC", plugin.getDescription().getName()));
     }
 
+    /**
+     * Set the shop NPC's spawn location
+     * @param location The location to spawn the NPC at
+     */
     public void setPos(Location location) {
         plugin.getConfig().set("shopNPCLocation", location);
         plugin.saveConfig();
     }
 
+    /**
+     * Send the shop NPC packets to the connected players
+     */
     public void showNPC() {
         if (npcExists) {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
@@ -75,12 +93,19 @@ public class ShopNPC {
         }
     }
 
+    /**
+     * Send the shop NPC packets to a player
+     * @param player The player in question
+     */
     public void showNPC(Player player) {
         if (npcExists) {
             npc.show(player);
         }
     }
 
+    /**
+     * Hide the shop NPC for all connected players
+     */
     public void hideNPC() {
         if (!npcExists) {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
@@ -89,20 +114,36 @@ public class ShopNPC {
         }
     }
 
+    /**
+     * Hide the shop NPC for a player
+     * @param player The player in question
+     */
     public void hideNPC(Player player) {
         if (npcExists) {
             npc.hide(player);
         }
     }
 
+    /**
+     * Update the NPC position by recreating it
+     */
     public void updateNPCPos() {
         destoryNPC();
         createNPC();
     }
 
+    /**
+     * Get if the shop NPC exists/is created
+     * @return
+     */
     public boolean getNPCExists() {
         return npcExists;
     }
+
+    /**
+     * Get the shop NPC's ID
+     * @return
+     */
     public String getNPCID() {
         return npcID;
     }

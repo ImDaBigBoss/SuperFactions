@@ -3,6 +3,7 @@ package com.github.imdabigboss.superfactions.commands;
 import com.github.imdabigboss.superfactions.SuperFactions;
 import com.github.imdabigboss.superfactions.shop.ShopGUI;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,24 +23,27 @@ public class ShopCommand implements CommandExecutor, TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "You must be a player to use this command");
+            return true;
+        }
+
         if (args.length < 1) {
-            if (sender instanceof Player) {
-                ShopGUI.openShop((Player) sender);
-            } else {
-                sender.sendMessage("Only players can open the shop!");
-            }
+            ShopGUI.openShop((Player) sender);
             return true;
         }
 
         if (args[0].equalsIgnoreCase("setpos")) {
             plugin.getShopNPC().setPos(((Player)sender).getLocation());
             if (plugin.getShopNPC().getNPCExists()) {
-                sender.sendMessage("Shop position updated!");
+                sender.sendMessage(ChatColor.AQUA + "Shop position updated!");
                 plugin.getShopNPC().updateNPCPos();
             } else {
-                sender.sendMessage("Shop created!");
+                sender.sendMessage(ChatColor.AQUA + "Shop created!");
                 plugin.getShopNPC().createNPC();
             }
+        } else if (args[0].equalsIgnoreCase("open")) {
+            ShopGUI.openShop((Player) sender);
         }
         return true;
     }
@@ -48,6 +52,7 @@ public class ShopCommand implements CommandExecutor, TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> cmds = new ArrayList<>();
         cmds.add("setpos");
+        cmds.add("open");
         return cmds;
     }
 }

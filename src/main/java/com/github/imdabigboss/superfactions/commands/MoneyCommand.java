@@ -27,7 +27,7 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
 
         if (args[0].equalsIgnoreCase("balance")) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage("You must be a player to use this command!");
+                sender.sendMessage(ChatColor.RED + "You must be a player to use this command!");
                 return true;
             }
             OfflinePlayer player = plugin.getOfflinePlayer((Player) sender);
@@ -35,11 +35,11 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
             sender.sendMessage(ChatColor.AQUA + "You have a balance of " + SuperFactions.getEconomy().formatMoney(balance));
         } else if (args[0].equalsIgnoreCase("send")) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage("You must be a player to use this command!");
+                sender.sendMessage(ChatColor.RED + "You must be a player to use this command!");
                 return true;
             }
             if (args.length < 3) {
-                sender.sendMessage("You must enter a player name and an amount!");
+                sender.sendMessage(ChatColor.RED + "You must enter a player name and an amount!");
                 return true;
             }
 
@@ -71,7 +71,7 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
                 return true;
             }
             if (args.length < 2) {
-                sender.sendMessage("You must enter a player name!");
+                sender.sendMessage(ChatColor.RED + "You must enter a player name!");
                 return true;
             }
 
@@ -88,7 +88,7 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
                 return true;
             }
             if (args.length < 3) {
-                sender.sendMessage("You must enter a player name and a balance!");
+                sender.sendMessage(ChatColor.RED + "You must enter a player name and a balance!");
                 return true;
             }
 
