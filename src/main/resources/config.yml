@@ -1,6 +1,8 @@
 version: 1.0
 currencyPrefix: '$'
 currencySuffix: ''
+currencyName: 'dollar'
+currencyNamePlural: 'dollars'
 
 shopNPCSkin: 1949474697
 shopNPCName: Merchant

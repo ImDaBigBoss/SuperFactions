@@ -7,14 +7,19 @@ import java.util.logging.Logger;
 
 import com.github.imdabigboss.superfactions.commands.*;
 import com.github.imdabigboss.superfactions.shop.ItemPrices;
-
 import com.github.imdabigboss.superfactions.shop.ShopNPC;
+
 import net.jitse.npclib.NPCLib;
 
+import net.milkbowl.vault.economy.Economy;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SuperFactions extends JavaPlugin {
@@ -27,6 +32,8 @@ public class SuperFactions extends JavaPlugin {
 
     public static String currencyPrefix = "$";
     public static String currencySuffix = "";
+    public static String currencyName = "";
+    public static String currencyNamePlural = "";
 
     @Override
     public void onEnable() {
@@ -52,6 +59,13 @@ public class SuperFactions extends JavaPlugin {
         if (getConfig().contains("currencySuffix")) {
             currencySuffix = getConfig().getString("currencySuffix");
         }
+
+        if (getConfig().contains("currencyName")) {
+            currencyName = getConfig().getString("currencyName");
+        }
+        if (getConfig().contains("currencyNamePlural")) {
+            currencyNamePlural = getConfig().getString("currencyNamePlural");
+        }
         getServer().getPluginManager().registerEvents(new EventListener(this), this);
 
         this.getCommand("superfactions").setExecutor(new SuperFactionsCommand(this));
@@ -59,6 +73,11 @@ public class SuperFactions extends JavaPlugin {
         this.getCommand("money").setExecutor(new MoneyCommand(this));
         this.getCommand("shop").setExecutor(new ShopCommand(this));
 
+        Plugin vault = getServer().getPluginManager().getPlugin("Vault");
+        if (vault != null) {
+            log.info(String.format("[%s] Enabled Vault connector. Vault version: %s", getDescription().getName(), vault.getDescription().getVersion()));
+            getServer().getServicesManager().register(Economy.class, new VaultConnector(this), this, ServicePriority.Highest);
+        }
         shopNPC.createNPC();
     }
 

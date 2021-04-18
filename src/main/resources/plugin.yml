@@ -3,6 +3,9 @@ version: ${project.version}
 main: com.github.imdabigboss.superfactions.SuperFactions
 api-version: 1.16
 
+softdepend:
+  - Vault
+
 commands:
   superfactions:
     description: The main Super Factions command

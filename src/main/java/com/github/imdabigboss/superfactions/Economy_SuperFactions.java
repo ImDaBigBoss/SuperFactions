@@ -93,6 +93,9 @@ public class Economy_SuperFactions {
      * @return true if the player has an acconut, false if not
      */
     public boolean playerHasAccount(OfflinePlayer player) {
+        if (player == null) {
+            return false;
+        }
         return playerBalances.containsKey(player);
     }
 

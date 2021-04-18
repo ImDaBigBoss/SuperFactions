@@ -38,6 +38,13 @@ public class SuperFactionsCommand implements CommandExecutor, TabExecutor {
             if (plugin.getConfig().contains("currencySuffix")) {
                 plugin.currencySuffix = plugin.getConfig().getString("currencySuffix");
             }
+
+            if (plugin.getConfig().contains("currencyName")) {
+                plugin.currencyName = plugin.getConfig().getString("currencyName");
+            }
+            if (plugin.getConfig().contains("currencyNamePlural")) {
+                plugin.currencyNamePlural = plugin.getConfig().getString("currencyNamePlural");
+            }
             sender.sendMessage(ChatColor.AQUA + "Economy reloaded!");
         } else if (args[0].equalsIgnoreCase("info")) {
             sender.sendMessage(String.format("%s: version: %s", plugin.getDescription().getName(), plugin.getDescription().getVersion()));
