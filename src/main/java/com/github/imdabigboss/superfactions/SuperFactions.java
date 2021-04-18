@@ -20,7 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class SuperFactions extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
     private static SuperFactions instance = null;
-    private static Economy economy = null;
+    private static Economy_SuperFactions economy = null;
     private static ItemPrices prices = null;
     private static NPCLib npcLib;
     private static ShopNPC shopNPC;
@@ -33,7 +33,7 @@ public class SuperFactions extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
         log.info(String.format("[%s] Enabled Version %s", getDescription().getName(), getDescription().getVersion()));
-        economy = new Economy(this);
+        economy = new Economy_SuperFactions(this);
         prices = new ItemPrices();
         npcLib = new NPCLib(this);
         shopNPC = new ShopNPC(this);
@@ -65,7 +65,7 @@ public class SuperFactions extends JavaPlugin {
     @Override
     public void onDisable() {
         shopNPC.destoryNPC();
-        economy.saveBalance();
+        economy.saveEconomy();
         log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
     }
 
@@ -132,7 +132,7 @@ public class SuperFactions extends JavaPlugin {
     public static Logger getLog() {
         return log;
     }
-    public static Economy getEconomy() {
+    public static Economy_SuperFactions getEconomy() {
         return economy;
     }
     public static ItemPrices getPrices() {

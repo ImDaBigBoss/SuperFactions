@@ -20,8 +20,10 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        plugin.getConfig().set("registeredPlayers." + player.getName(), player.getUniqueId().toString());
-        plugin.saveConfig();
+        if (!plugin.getConfig().contains("registeredPlayers." + player.getName())) {
+            plugin.getConfig().set("registeredPlayers." + player.getName(), player.getUniqueId().toString());
+            plugin.saveConfig();
+        }
 
         SuperFactions.getShopNPC().showNPC(player);
     }

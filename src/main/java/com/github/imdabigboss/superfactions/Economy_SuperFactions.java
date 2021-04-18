@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Economy {
+public class Economy_SuperFactions {
     private SuperFactions plugin;
     private Map<OfflinePlayer, Double> playerBalances = new HashMap<>();
 
-    public Economy(SuperFactions plugin) {
+    public Economy_SuperFactions(SuperFactions plugin) {
         this.plugin = plugin;
-        loadBalance();
+        loadEconomy();
     }
 
     /**
@@ -23,7 +23,7 @@ public class Economy {
     public void setPlayerBalance(OfflinePlayer player, double balance) {
         createPlayerAccount(player);
         playerBalances.replace(player, balance);
-        saveBalance(player);
+        saveEconomy(player);
     }
 
     /**
@@ -44,7 +44,7 @@ public class Economy {
     public void playerDeposit(OfflinePlayer player, double amount) {
         createPlayerAccount(player);
         playerBalances.replace(player, getPlayerBalance(player) + amount);
-        saveBalance(player);
+        saveEconomy(player);
     }
 
     /**
@@ -55,7 +55,7 @@ public class Economy {
     public void playerWithdraw(OfflinePlayer player, double amount) {
         createPlayerAccount(player);
         playerBalances.replace(player, getPlayerBalance(player) - amount);
-        saveBalance(player);
+        saveEconomy(player);
     }
 
     /**
@@ -65,6 +65,7 @@ public class Economy {
      * @return true if the player can afford, false if not
      */
     public boolean playerCanAfford(OfflinePlayer player, double amount) {
+        createPlayerAccount(player);
         if (amount > getPlayerBalance(player)) {
             return false;
         } else {
@@ -107,20 +108,22 @@ public class Economy {
     /**
      * Load player balances from config
      */
-    public void loadBalance() {
+    public void loadEconomy() {
         playerBalances.clear();
-        Map<String, Object> values = plugin.getConfig().getConfigurationSection("economy").getValues(true);
 
-        for (String string : values.keySet()) {
-            OfflinePlayer player = plugin.getOfflinePlayer(UUID.fromString(string));
-            playerBalances.put(player, plugin.getConfig().getDouble("economy." + string));
+        if (plugin.getConfig().contains("economy")) {
+            Map<String, Object> values = plugin.getConfig().getConfigurationSection("economy").getValues(true);
+            for (String string : values.keySet()) {
+                OfflinePlayer player = plugin.getOfflinePlayer(UUID.fromString(string));
+                playerBalances.put(player, plugin.getConfig().getDouble("economy." + string));
+            }
         }
     }
 
     /**
      * Save ALL player balances to config (can be slow if there are a lot of players)
      */
-    public void saveBalance() {
+    public void saveEconomy() {
         for (OfflinePlayer player : playerBalances.keySet()) {
             plugin.getConfig().set("economy." + player.getUniqueId().toString(), playerBalances.get(player));
         }
@@ -131,7 +134,7 @@ public class Economy {
      * Save one player's balance to config
      * @param player The offline player
      */
-    public void saveBalance(OfflinePlayer player) {
+    public void saveEconomy(OfflinePlayer player) {
         plugin.getConfig().set("economy." + player.getUniqueId().toString(), playerBalances.get(player));
         plugin.saveConfig();
     }

@@ -54,7 +54,7 @@ public class ShopNPC {
             npc.setSkin(skin);
             npc.create();
             npcExists = true;
-            plugin.getLog().info(String.format("[%s] Created shop NPC at: %f %f %f", plugin.getDescription().getName(), location.getX(), location.getY(), location.getZ()));
+            plugin.getLog().info(String.format("[%s] Created shop NPC at %f %f %f", plugin.getDescription().getName(), location.getX(), location.getY(), location.getZ()));
 
             showNPC();
         });

@@ -27,11 +27,11 @@ public class SuperFactionsCommand implements CommandExecutor, TabExecutor {
         }
 
         if (args[0].equalsIgnoreCase("save")) {
-            SuperFactions.getEconomy().saveBalance();
+            SuperFactions.getEconomy().saveEconomy();
             sender.sendMessage(ChatColor.AQUA + "Economy saved!");
         } else if (args[0].equalsIgnoreCase("reload")) {
             plugin.reloadConfig();
-            SuperFactions.getEconomy().loadBalance();
+            SuperFactions.getEconomy().loadEconomy();
             if (plugin.getConfig().contains("currencyPrefix")) {
                 plugin.currencyPrefix = plugin.getConfig().getString("currencyPrefix");
             }
