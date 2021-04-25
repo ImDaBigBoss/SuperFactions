@@ -21,6 +21,16 @@ commands:
     description: The shop command
     usage: /shop [setpos]
     permission: superfactions.admin
+  dailycrate:
+    description: Get a daily crate every set amount of time
+    usage: /dailycrate
+  opencrate:
+    description: Open a previously claimed crate
+    usage: /opencrate
+  givecrate:
+    description: Give a player a crate
+    usage: /givecrate
+    permission: superfactions.admin
 
 permissions:
   superfactions.admin:

@@ -41,7 +41,7 @@ public class SuperFactions extends JavaPlugin {
         saveDefaultConfig();
         log.info(String.format("[%s] Enabled Version %s", getDescription().getName(), getDescription().getVersion()));
         economy = new Economy_SuperFactions(this);
-        prices = new ItemPrices();
+        prices = new ItemPrices(this);
         npcLib = new NPCLib(this);
         shopNPC = new ShopNPC(this);
 
@@ -72,6 +72,9 @@ public class SuperFactions extends JavaPlugin {
         this.getCommand("balance").setExecutor(new BalanceCommand(this));
         this.getCommand("money").setExecutor(new MoneyCommand(this));
         this.getCommand("shop").setExecutor(new ShopCommand(this));
+        this.getCommand("dailycrate").setExecutor(new DailyCrateCommand(this));
+        this.getCommand("opencrate").setExecutor(new OpenCrateCommand(this));
+        this.getCommand("givecrate").setExecutor(new GiveCrateCommand(this));
 
         Plugin vault = getServer().getPluginManager().getPlugin("Vault");
         if (vault != null) {

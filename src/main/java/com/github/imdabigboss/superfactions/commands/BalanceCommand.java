@@ -1,7 +1,6 @@
 package com.github.imdabigboss.superfactions.commands;
 
 import com.github.imdabigboss.superfactions.SuperFactions;
-import com.github.imdabigboss.superfactions.shop.ShopGUI;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

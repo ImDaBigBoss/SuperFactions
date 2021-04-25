@@ -1,5 +1,7 @@
 package com.github.imdabigboss.superfactions.shop;
 
+import com.github.imdabigboss.superfactions.SuperFactions;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -8,9 +10,11 @@ import java.util.Map;
 
 public class ItemPrices {
     private Map<String, Double> prices = new HashMap<>();
-    private double sellPercentage = 0.45;
+    private SuperFactions plugin;
 
-    public ItemPrices() {
+    public ItemPrices(SuperFactions plugin) {
+        this.plugin = plugin;
+
         prices.put("ACACIA_BOAT", 2.48);
         prices.put("ACACIA_BUTTON", 0.48);
         prices.put("ACACIA_DOOR", 1.05);
@@ -887,6 +891,13 @@ public class ItemPrices {
     public double getSellPrice(String item) {
         if (!prices.containsKey(item)) {
             return -1.0;
+        }
+
+        double sellPercentage;
+        if (!plugin.getConfig().contains("shopSellPercentage")) {
+            sellPercentage = 0.45;
+        } else {
+            sellPercentage = plugin.getConfig().getDouble("shopSellPercentage");
         }
 
         return (double)Math.round((prices.get(item) * sellPercentage) * 100) / 100;
