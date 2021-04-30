@@ -25,7 +25,7 @@ public class EventListener implements Listener {
             plugin.saveConfig();
         }
 
-        SuperFactions.getShopNPC().showNPC(player);
+        SuperFactions.getShopNPC().forceShowNPC(player);
     }
 
     @EventHandler

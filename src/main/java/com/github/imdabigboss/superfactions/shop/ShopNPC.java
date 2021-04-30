@@ -104,6 +104,17 @@ public class ShopNPC {
     }
 
     /**
+     * Force show the NPC to a player
+     * @param player The player in question
+     */
+    public void forceShowNPC(Player player) {
+        if (npcExists) {
+            npc.create();
+            npc.show(player);
+        }
+    }
+
+    /**
      * Hide the shop NPC for all connected players
      */
     public void hideNPC() {
