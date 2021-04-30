@@ -365,6 +365,7 @@ public class ShopGUI {
 
     private static GuiElementGroup GUIElementsOfPlayerInv(Player player, GuiElementGroup group, boolean reopenShop, InventoryGui sellGui) {
         for (int i = 0; i <= 35; i++) {
+            final int itemIndex = i;
             ItemStack item = player.getInventory().getItem(i);
             if (item != null && item.getType() != Material.AIR) {
                 if (Shop.getItemSellPrice(item) == -1.0) {
@@ -376,7 +377,7 @@ public class ShopGUI {
                     group.addElement(new StaticGuiElement('e', item, item.getAmount(), click -> {
                         ItemStack clickedItem = click.getEvent().getCurrentItem();
                         if (clickedItem != null) {
-                            Shop.sellItem(player, clickedItem.getType(), clickedItem.getAmount());
+                            Shop.sellItem(player, clickedItem.getType(), clickedItem.getAmount(), itemIndex);
                             group.clearElements();
                             GUIElementsOfPlayerInv(player, group, reopenShop, sellGui);
                             sellGui.show(player, true);

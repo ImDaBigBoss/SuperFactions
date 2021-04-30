@@ -64,8 +64,8 @@ public class Shop {
      * @param material The item's material to buy
      * @param amount The amount of the item to buy
      */
-    public static void sellItem(Player player, Material material, int amount) {
-        ItemStack item = new ItemStack(material);
+    public static void sellItem(Player player, Material material, int amount, int invIndex) {
+        ItemStack item = player.getInventory().getItem(invIndex);
 
         if (!player.getInventory().containsAtLeast(item, amount)) {
             player.sendMessage(ChatColor.RED + "You don't have that item in your inventory, you can't sell it.");
