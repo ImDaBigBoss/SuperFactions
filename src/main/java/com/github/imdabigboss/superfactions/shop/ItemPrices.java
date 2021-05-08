@@ -159,6 +159,7 @@ public class ItemPrices {
         prices.put("CHORUS_FLOWER", 5.0);
         prices.put("CHORUS_FRUIT", 2.75);
         prices.put("CLAY", 0.25);
+        prices.put("CLAY_BALL", 0.06);
         prices.put("CLOCK", 241.5);
         prices.put("COAL", 1.5);
         prices.put("COAL_BLOCK", 13.5);
@@ -170,11 +171,13 @@ public class ItemPrices {
         prices.put("COBBLESTONE_WALL", 0.22);
         prices.put("COBWEB", 36.01);
         prices.put("COCOA_BEANS", 1.25);
+        prices.put("COD", 5.9);
         prices.put("COMPARATOR", 5.81);
         prices.put("COMPASS", 61.5);
         prices.put("COMPOSTER", 1.54);
         prices.put("COOKED_BEEF", 1.54);
         prices.put("COOKED_CHICKEN", 1.34);
+        prices.put("COOKED_COD", 6.8);
         prices.put("COOKED_MUTTON", 1.49);
         prices.put("COOKED_PORKCHOP", 1.35);
         prices.put("COOKED_RABBIT", 1.54);
@@ -239,6 +242,8 @@ public class ItemPrices {
         prices.put("DARK_OAK_TRAPDOOR", 1.25);
         prices.put("DARK_OAK_WOOD", 1.5);
         prices.put("DARK_PRISMARINE", 15.55);
+        prices.put("DARK_PRISMARINE_SLAB", 7.78);
+        prices.put("DARK_PRISMARINE_STAIRS", 23.33);
         prices.put("DAYLIGHT_DETECTOR", 10.91);
         prices.put("DEAD_BUSH", 0.35);
         prices.put("DETECTOR_RAIL", 15.46);
@@ -608,6 +613,8 @@ public class ItemPrices {
         prices.put("POLISHED_BLACKSTONE_BRICK_SLAB", 0.45);
         prices.put("POLISHED_BLACKSTONE_BRICK_STAIRS", 0.53);
         prices.put("POLISHED_BLACKSTONE_BRICK_WALL", 0.45);
+        prices.put("POLISHED_BLACKSTONE_BUTTON", 0.69);
+        prices.put("POLISHED_BLACKSTONE_PRESSURE_PLATE", 1.38);
         prices.put("POLISHED_BLACKSTONE_SLAB", 0.35);
         prices.put("POLISHED_BLACKSTONE_STAIRS", 1.04);
         prices.put("POLISHED_BLACKSTONE_WALL", 0.79);
@@ -625,8 +632,12 @@ public class ItemPrices {
         prices.put("POWERED_RAIL", 60.35);
         prices.put("PRISMARINE", 7.1);
         prices.put("PRISMARINE_BRICKS", 15.85);
+        prices.put("PRISMARINE_BRICK_SLAB", 3.57);
+        prices.put("PRISMARINE_BRICK_STAIRS", 23.78);
         prices.put("PRISMARINE_CRYSTALS", 2.5);
         prices.put("PRISMARINE_SHARD", 1.75);
+        prices.put("PRISMARINE_SLAB", 1.6);
+        prices.put("PRISMARINE_STAIRS", 10.65);
         prices.put("PRISMARINE_WALL", 7.2);
         prices.put("PUFFERFISH", 1.0);
         prices.put("PUMPKIN", 0.35);
@@ -698,7 +709,9 @@ public class ItemPrices {
         prices.put("SANDSTONE_SLAB", 3.37);
         prices.put("SANDSTONE_STAIRS", 10.08);
         prices.put("SANDSTONE_WALL", 6.8);
+        prices.put("SALMON", 5.9);
         prices.put("SEA_LANTERN", 19.6);
+        prices.put("SEA_PICKLE", 2.00);
         prices.put("SEAGRASS", 3.54);
         prices.put("SCAFFOLDING", 12.75);
         prices.put("SHEARS", 30.48);
@@ -796,6 +809,9 @@ public class ItemPrices {
         prices.put("TOTEM_OF_UNDYING", 2500.0);
         prices.put("TRAPPED_CHEST", 19.24);
         prices.put("TRIPWIRE_HOOK", 15.94);
+        prices.put("TRIDENT", 500.00);
+        prices.put("TURTLE_EGG", 50.00);
+        prices.put("TROPICAL_FISH", 6.9);
         prices.put("TWISTING_VINES", 1.15);
         prices.put("VEX_SPAWN_EGG", 14500.0);
         prices.put("VILLAGER_SPAWN_EGG", 65.0);
