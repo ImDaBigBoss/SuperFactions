@@ -2,21 +2,27 @@ package com.github.imdabigboss.superfactions.commands;
 
 import com.github.imdabigboss.superfactions.SuperFactions;
 
+import jdk.nashorn.internal.ir.Block;
 import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class OpenCrateCommand implements CommandExecutor, TabExecutor {
@@ -71,7 +77,7 @@ public class OpenCrateCommand implements CommandExecutor, TabExecutor {
         }
 
         if (player.getInventory().firstEmpty() == -1) {
-            player.sendMessage(ChatColor.RED + "You need to free up some space in your inventory before buying items.");
+            player.sendMessage(ChatColor.RED + "You need to free up some space in your inventory before claiming daily crates.");
             return;
         }
 
@@ -94,7 +100,21 @@ public class OpenCrateCommand implements CommandExecutor, TabExecutor {
             player.getInventory().addItem(item);
             player.sendMessage(ChatColor.AQUA + "You got a " + ChatColor.GREEN + item.getItemMeta().getDisplayName() + ChatColor.AQUA + " from the daily crate!");
         } else if (itemChance < 76) { //Spawner 1%
+            ItemStack item = new ItemStack(Material.SPAWNER);
+            BlockStateMeta meta = (BlockStateMeta) item.getItemMeta();
+            CreatureSpawner spawner = (CreatureSpawner) meta.getBlockState();
 
+            EntityType entityType = getRandomSpawnerEntity();
+            String entityName = entityType.toString().toLowerCase();
+            spawner.setSpawnedType(entityType);
+
+            String itemName = entityName.substring(0, 1).toUpperCase() + entityName.substring(1) + " spawner";
+            meta.setDisplayName(ChatColor.GREEN.toString() + ChatColor.BOLD + itemName);
+            meta.setBlockState(spawner);
+            item.setItemMeta(meta);
+
+            player.getInventory().addItem(item);
+            player.sendMessage(ChatColor.AQUA + "You got a " + ChatColor.GREEN + itemName + ChatColor.AQUA + " from the daily crate!");
         } else if (itemChance < 79) { //Mending 3%
             ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
             EnchantmentStorageMeta meta = (EnchantmentStorageMeta)book.getItemMeta();
@@ -212,6 +232,22 @@ public class OpenCrateCommand implements CommandExecutor, TabExecutor {
         items.add(helmet);
 
         return items;
+    }
+
+    public EntityType getRandomSpawnerEntity() {
+        List<EntityType> entityTypes = new ArrayList<>();
+        entityTypes.add(EntityType.PIG);
+        entityTypes.add(EntityType.COW);
+        entityTypes.add(EntityType.CHICKEN);
+        entityTypes.add(EntityType.SHEEP);
+        entityTypes.add(EntityType.SPIDER);
+        entityTypes.add(EntityType.CREEPER);
+        entityTypes.add(EntityType.ZOMBIE);
+
+        Random r = new Random();
+        EntityType entity = entityTypes.get(r.nextInt(entityTypes.size()));
+
+        return entity;
     }
 
     @Override

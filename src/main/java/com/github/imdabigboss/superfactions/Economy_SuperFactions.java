@@ -80,7 +80,7 @@ public class Economy_SuperFactions {
      */
     public boolean createPlayerAccount(OfflinePlayer player) {
         if (!playerHasAccount(player)) {
-            playerBalances.put(player, 100.0);
+            playerBalances.put(player, plugin.getConfig().getDouble("playerFirstJoinAmount"));
             return false;
         } else {
             return true;
