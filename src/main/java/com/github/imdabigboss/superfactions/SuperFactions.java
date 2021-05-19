@@ -29,6 +29,7 @@ public class SuperFactions extends JavaPlugin {
     private static ItemPrices prices = null;
     private static NPCLib npcLib;
     private static ShopNPC shopNPC;
+    private static YMLUtils claimsYML = null;
 
     public static String currencyPrefix = "$";
     public static String currencySuffix = "";
@@ -38,12 +39,15 @@ public class SuperFactions extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        saveDefaultConfig();
+        this.saveDefaultConfig();
+
         log.info(String.format("[%s] Enabled Version %s", getDescription().getName(), getDescription().getVersion()));
+
         economy = new Economy_SuperFactions(this);
         prices = new ItemPrices(this);
         npcLib = new NPCLib(this);
         shopNPC = new ShopNPC(this);
+        claimsYML = new YMLUtils("claims.yml");
 
         if (getConfig().contains("version")) {
             if (!getConfig().getString("version").equalsIgnoreCase(getDescription().getVersion())) {
@@ -75,6 +79,7 @@ public class SuperFactions extends JavaPlugin {
         this.getCommand("dailycrate").setExecutor(new DailyCrateCommand(this));
         this.getCommand("opencrate").setExecutor(new OpenCrateCommand(this));
         this.getCommand("givecrate").setExecutor(new GiveCrateCommand(this));
+        this.getCommand("claim").setExecutor(new ClaimCommand(this));
 
         Plugin vault = getServer().getPluginManager().getPlugin("Vault");
         if (vault != null) {
@@ -166,6 +171,10 @@ public class SuperFactions extends JavaPlugin {
     public static ShopNPC getShopNPC() {
         return shopNPC;
     }
+    public static YMLUtils getClaimsYML() {
+        return claimsYML;
+    }
+
     public static SuperFactions getInstance() {
         return instance;
     }

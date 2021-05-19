@@ -31,6 +31,9 @@ commands:
     description: Give a player a crate
     usage: /givecrate
     permission: superfactions.admin
+  claim:
+    description: Manage claimed chunks
+    usage: /claim
 
 permissions:
   superfactions.admin:

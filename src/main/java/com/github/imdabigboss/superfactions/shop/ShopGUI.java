@@ -384,7 +384,7 @@ public class ShopGUI {
                         }
 
                         return true;
-                    }, Shop.formatItemName(item), "Price per piece: " + SuperFactions.getEconomy().formatMoney(Shop.getItemSellPrice(item, item.getAmount()))
+                    }, Shop.formatItemName(item), "Sell price: " + SuperFactions.getEconomy().formatMoney(Shop.getItemSellPrice(item, item.getAmount()))
                     ));
                 }
             }
