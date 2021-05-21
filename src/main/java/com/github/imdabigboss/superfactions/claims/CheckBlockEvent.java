@@ -14,6 +14,9 @@ public class CheckBlockEvent {
         String chunkName = chunk.getX() + "|" + chunk.getZ() + "|" + player.getLocation().getWorld().getName();
 
         if (SuperFactions.chunkDataMap.get(chunkName).isClaimed()) {
+            if (SuperFactions.chunkDataMap.get(chunkName).isReserved()) {
+                return false;
+            }
             return !SuperFactions.chunkDataMap.get(chunkName).hasPermissions(player);
         } else {
             return false;

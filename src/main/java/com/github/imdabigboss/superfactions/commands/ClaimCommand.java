@@ -50,6 +50,10 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
                 String configName = chunkX + "|" + chunkZ + "|" + player.getLocation().getWorld().getName();
 
                 if (yml.getConfig().contains(configName)) {
+                    if (yml.getConfig().getBoolean(configName + ".isReserved")) {
+                        sender.sendMessage(ChatColor.RED + "This chunk is reserved, you can't claim it!");
+                        return true;
+                    }
                     String playerName = plugin.getOfflinePlayer(UUID.fromString(yml.getConfig().getString(configName + ".owner"))).getName();
 
                     sender.sendMessage(ChatColor.RED + "This chunk is already claimed by " + playerName);
@@ -68,12 +72,11 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
                 }
 
                 yml.getConfig().set(configName + ".owner", player.getUniqueId().toString());
-                yml.getConfig().set(configName + ".chunkX", chunkX);
-                yml.getConfig().set(configName + ".chunkZ", chunkZ);
                 yml.getConfig().set(configName + ".invited", invited);
+                yml.getConfig().set(configName + ".isReserved", false);
                 yml.saveConfig();
 
-                SuperFactions.chunkDataMap.replace(configName, new ChunkData(player.getUniqueId().toString(), chunkX, chunkZ, player.getLocation().getWorld().getName(), invited));
+                SuperFactions.chunkDataMap.replace(configName, new ChunkData(player.getUniqueId().toString(), player.getLocation().getWorld().getName(), invited));
 
                 sender.sendMessage(ChatColor.AQUA + "You have just claimed this chunk, and now have " + chunkAmount + " chunk(s) left to claim.");
             } else if (args[0].equalsIgnoreCase("remove")) {
@@ -85,20 +88,32 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
                     sender.sendMessage(ChatColor.RED + "This chunk is not claimed.");
                     return true;
                 }
-                if (!yml.getConfig().getString(configName + ".owner").equalsIgnoreCase(player.getUniqueId().toString())) {
-                    sender.sendMessage(ChatColor.RED + "You don't own this chunk.");
-                    return true;
+                boolean isReserved = yml.getConfig().getBoolean(configName + ".isReserved");
+                if (isReserved) {
+                    if (!plugin.isAdmin(sender)) {
+                        sender.sendMessage(ChatColor.RED + "You can't remove reserved chunks if you are not admin!");
+                        return true;
+                    }
+                } else {
+                    if (!yml.getConfig().getString(configName + ".owner").equalsIgnoreCase(player.getUniqueId().toString())) {
+                        sender.sendMessage(ChatColor.RED + "You don't own this chunk.");
+                        return true;
+                    }
                 }
 
                 yml.getConfig().set(configName, null);
                 yml.saveConfig();
-                SuperFactions.chunkDataMap.replace(configName, new ChunkData(false, player.getLocation().getWorld().getName()));
+                SuperFactions.chunkDataMap.replace(configName, new ChunkData(false, false, player.getLocation().getWorld().getName()));
 
-                int chunkAmount = getChunkAmount(player) + 1;
-                plugin.getConfig().set("claims." + player.getUniqueId() + ".chunkAmount", chunkAmount);
-                plugin.saveConfig();
+                if (!isReserved) {
+                    int chunkAmount = getChunkAmount(player) + 1;
+                    plugin.getConfig().set("claims." + player.getUniqueId() + ".chunkAmount", chunkAmount);
+                    plugin.saveConfig();
 
-                sender.sendMessage(ChatColor.AQUA + "You have unclaimed this chunk, and now have " + chunkAmount + " chunk(s) left to claim.");
+                    sender.sendMessage(ChatColor.AQUA + "You have unclaimed this chunk, and now have " + chunkAmount + " chunk(s) left to claim.");
+                } else {
+                    sender.sendMessage(ChatColor.AQUA + "You un-reserved this chunk.");
+                }
             } else if (args[0].equalsIgnoreCase("invite")) {
                 sendHelp(sender);
             } else if (args[0].equalsIgnoreCase("revoke")) {
@@ -108,13 +123,18 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
                 int chunkZ = player.getLocation().getBlockZ() >> 4;
                 String configName = chunkX + "|" + chunkZ + "|" + player.getLocation().getWorld().getName();
 
-                if (!yml.getConfig().contains(configName)) {
+                if (!SuperFactions.chunkDataMap.get(configName).isClaimed()) {
                     sender.sendMessage("This chunk is not claimed.");
                     return true;
                 }
 
-                String owner = plugin.getOfflinePlayer(UUID.fromString(yml.getConfig().getString(configName + ".owner"))).getName();
-                List<String> invitedList = yml.getConfig().getStringList(configName + ".invited");
+                if (SuperFactions.chunkDataMap.get(configName).isReserved()) {
+                    sender.sendMessage("This chunk is reserved.");
+                    return true;
+                }
+
+                String owner = plugin.getOfflinePlayer(UUID.fromString(SuperFactions.chunkDataMap.get(configName).getOwner())).getName();
+                List<String> invitedList = SuperFactions.chunkDataMap.get(configName).getInvited();
                 String invited = "";
                 for (String uuid : invitedList) {
                     invited += plugin.getOfflinePlayer(UUID.fromString(uuid)).getName() + "; ";
@@ -135,6 +155,34 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
                 sender.sendMessage(ChatColor.AQUA + "You bought a chunk for " + SuperFactions.getEconomy().formatMoney(SuperFactions.chunkPrice) + "!");
             } else if (args[0].equalsIgnoreCase("chunkamount")) {
                 sender.sendMessage("You have " + getChunkAmount(player) + " chunk(s) left to claim.");
+            } else if (args[0].equalsIgnoreCase("reserve")) {
+                if (!plugin.isAdmin(sender)) {
+                    sendHelp(sender);
+                    return true;
+                }
+
+                int chunkX = player.getLocation().getBlockX() >> 4;
+                int chunkZ = player.getLocation().getBlockZ() >> 4;
+                String world = player.getLocation().getWorld().getName();
+                String configName = chunkX + "|" + chunkZ + "|" + world;
+
+                if (yml.getConfig().contains(configName)) {
+                    if (yml.getConfig().getBoolean(configName + ".isReserved")) {
+                        sender.sendMessage(ChatColor.RED + "This chunk is already reserved!");
+                        return true;
+                    }
+                    String playerName = plugin.getOfflinePlayer(UUID.fromString(yml.getConfig().getString(configName + ".owner"))).getName();
+
+                    sender.sendMessage(ChatColor.RED + "This chunk is already claimed by " + playerName);
+                    return true;
+                }
+
+                yml.getConfig().set(configName + ".isReserved", true);
+                yml.saveConfig();
+
+                SuperFactions.chunkDataMap.replace(configName, new ChunkData(true, true, world));
+
+                sender.sendMessage(ChatColor.AQUA + "This chunk is now reserved! To un-reserve it, use \"/claim remove\".");
             } else {
                 sendHelp(sender);
             }
@@ -309,6 +357,9 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
             cmd.add("defaultperms");
             cmd.add("buy");
             cmd.add("chunkamount");
+            if (plugin.isAdmin(sender)) {
+                cmd.add("reserve");
+            }
             return cmd;
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("invite")) {

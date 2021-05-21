@@ -1,35 +1,29 @@
 package com.github.imdabigboss.superfactions.claims;
 
-import org.bukkit.*;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
-import org.bukkit.util.NumberConversions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChunkData {
     private boolean isClaimed;
-    private String owner = "";
-    private int chunkX = 0;
-    private int chunkZ = 0;
+    private boolean isReserved;
+    private String owner;
     private String world;
     private List<String> invited;
 
-    public ChunkData(boolean isClaimed, String world) {
+    public ChunkData(boolean isClaimed, boolean isReserved, String world) {
         this.isClaimed = isClaimed;
+        this.isReserved = isReserved;
+        this.owner = "";
         this.world = world;
         this.invited = new ArrayList<>();
     }
 
-    public ChunkData(String owner, int chunkX, int chunkZ, String world) {
-        new ChunkData(owner, chunkX, chunkZ, world, new ArrayList<>());
-    }
-
-    public ChunkData(String owner, int chunkX, int chunkZ, String world, List<String> invited) {
+    public ChunkData(String owner, String world, List<String> invited) {
         this.isClaimed = true;
+        this.isReserved = false;
         this.owner = owner;
-        this.chunkX = chunkX;
-        this.chunkZ = chunkZ;
         this.world = world;
         this.invited = invited;
     }
@@ -38,20 +32,8 @@ public class ChunkData {
         return owner;
     }
 
-    public int getChunkX() {
-        return chunkX;
-    }
-
-    public int getChunkZ() {
-        return chunkZ;
-    }
-
     public String getWorld() {
         return world;
-    }
-
-    public String getChunkName() {
-        return chunkX + "|" + chunkZ;
     }
 
     public void addInvited(Player player) {
@@ -86,11 +68,15 @@ public class ChunkData {
         return invited.contains(playerUUID) || owner.equalsIgnoreCase(playerUUID);
     }
 
+    public List<String> getInvited() {
+        return invited;
+    }
+
     public boolean isClaimed() {
         return isClaimed;
     }
 
-    public void setIsClaimed(boolean claimed) {
-        isClaimed = claimed;
+    public boolean isReserved() {
+        return isReserved;
     }
 }

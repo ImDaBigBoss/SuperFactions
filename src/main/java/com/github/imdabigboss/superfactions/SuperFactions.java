@@ -111,8 +111,12 @@ public class SuperFactions extends JavaPlugin {
                             loadChunkToClaimMap(chunkName, world);
                             loadChunksAroundChunkToClaimMap(cx, cz, world);
 
-                            if (!chunkDataMap.get(chunkName).isClaimed()) {
-                                continue;
+                            boolean isReserved = chunkDataMap.get(chunkName).isReserved();
+
+                            if (!isReserved) {
+                                if (!chunkDataMap.get(chunkName).isClaimed()) {
+                                    continue;
+                                }
                             }
 
                             int minX = cx * 16;
@@ -124,7 +128,9 @@ public class SuperFactions extends JavaPlugin {
                             int minZ = cz * 16;
                             int maxZ = minZ + 16;
 
-                            if (!chunkDataMap.get(cx + "|" + (cz - 1) + "|" + world).getOwner().equalsIgnoreCase(chunkDataMap.get(chunkName).getOwner())) {
+                            String currentOwner = chunkDataMap.get(chunkName).getOwner();
+
+                            if (!(chunkDataMap.get(cx + "|" + (cz - 1) + "|" + world).getOwner().equalsIgnoreCase(currentOwner)) || isReserved) {
                                 for (int x = minX; x <= maxX; x += 2) {
                                     for (int y = minY; y <= maxY; y += 2) {
                                         player.spawnParticle(Particle.REDSTONE, x, y, minZ, 1, claimDustOptions);
@@ -132,7 +138,7 @@ public class SuperFactions extends JavaPlugin {
                                 }
                             }
 
-                            if (!chunkDataMap.get(cx + "|" + (cz + 1) + "|" + world).getOwner().equalsIgnoreCase(chunkDataMap.get(chunkName).getOwner())) {
+                            if (!(chunkDataMap.get(cx + "|" + (cz + 1) + "|" + world).getOwner().equalsIgnoreCase(currentOwner)) || isReserved) {
                                 for (int x = minX; x <= maxX; x += 2) {
                                     for (int y = minY; y <= maxY; y += 2) {
                                         player.spawnParticle(Particle.REDSTONE, x, y, maxZ, 1, claimDustOptions);
@@ -140,7 +146,7 @@ public class SuperFactions extends JavaPlugin {
                                 }
                             }
 
-                            if (!chunkDataMap.get((cx - 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(chunkDataMap.get(chunkName).getOwner())) {
+                            if (!(chunkDataMap.get((cx - 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(currentOwner)) || isReserved) {
                                 for (int z = minZ; z <= maxZ; z += 2) {
                                     for (int y = minY; y <= maxY; y += 2) {
                                         player.spawnParticle(Particle.REDSTONE, minX, y, z, 1, claimDustOptions);
@@ -148,7 +154,7 @@ public class SuperFactions extends JavaPlugin {
                                 }
                             }
 
-                            if (!chunkDataMap.get((cx + 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(chunkDataMap.get(chunkName).getOwner())) {
+                            if (!(chunkDataMap.get((cx + 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(currentOwner)) || isReserved) {
                                 for (int z = minZ; z <= maxZ; z += 2) {
                                     for (int y = minY; y <= maxY; y += 2) {
                                         player.spawnParticle(Particle.REDSTONE, maxX, y, z, 1, claimDustOptions);
@@ -186,14 +192,18 @@ public class SuperFactions extends JavaPlugin {
         if (!chunkDataMap.containsKey(chunkName)) {
             if (claimsYML.getConfig().contains(chunkName)) {
                 if (claimsYML.getConfig().get(chunkName) == null) {
-                    chunkDataMap.put(chunkName, new ChunkData(false, world));
+                    chunkDataMap.put(chunkName, new ChunkData(false, false, world));
                 } else {
-                    List<String> invited = claimsYML.getConfig().getStringList(chunkName + ".invited");
-                    ChunkData data = new ChunkData(claimsYML.getConfig().getString(chunkName + ".owner"), claimsYML.getConfig().getInt(chunkName + ".chunkX"), claimsYML.getConfig().getInt(chunkName + ".chunkZ"), world, invited);
-                    chunkDataMap.put(chunkName, data);
+                    if (claimsYML.getConfig().getBoolean(chunkName + ".isReserved")) {
+                        chunkDataMap.put(chunkName, new ChunkData(true, true, world));
+                    } else {
+                        List<String> invited = claimsYML.getConfig().getStringList(chunkName + ".invited");
+                        ChunkData data = new ChunkData(claimsYML.getConfig().getString(chunkName + ".owner"), world, invited);
+                        chunkDataMap.put(chunkName, data);
+                    }
                 }
             } else {
-                chunkDataMap.put(chunkName, new ChunkData(false, world));
+                chunkDataMap.put(chunkName, new ChunkData(false, false, world));
             }
         }
     }
