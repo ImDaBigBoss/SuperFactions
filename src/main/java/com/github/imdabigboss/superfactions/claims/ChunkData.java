@@ -8,19 +8,29 @@ import org.bukkit.util.NumberConversions;
 import java.util.*;
 
 public class ChunkData {
-    private String owner;
-    private int chunkX;
-    private int chunkZ;
+    private boolean isClaimed;
+    private String owner = "";
+    private int chunkX = 0;
+    private int chunkZ = 0;
+    private String world;
     private List<String> invited;
 
-    public ChunkData(String owner, int chunkX, int chunkZ) {
-        new ChunkData(owner, chunkX, chunkZ, new ArrayList<>());
+    public ChunkData(boolean isClaimed, String world) {
+        this.isClaimed = isClaimed;
+        this.world = world;
+        this.invited = new ArrayList<>();
     }
 
-    public ChunkData(String owner, int chunkX, int chunkZ, List<String> invited) {
+    public ChunkData(String owner, int chunkX, int chunkZ, String world) {
+        new ChunkData(owner, chunkX, chunkZ, world, new ArrayList<>());
+    }
+
+    public ChunkData(String owner, int chunkX, int chunkZ, String world, List<String> invited) {
+        this.isClaimed = true;
         this.owner = owner;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
+        this.world = world;
         this.invited = invited;
     }
 
@@ -34,6 +44,10 @@ public class ChunkData {
 
     public int getChunkZ() {
         return chunkZ;
+    }
+
+    public String getWorld() {
+        return world;
     }
 
     public String getChunkName() {
@@ -70,5 +84,13 @@ public class ChunkData {
 
     public boolean hasPermissions(String playerUUID) {
         return invited.contains(playerUUID) || owner.equalsIgnoreCase(playerUUID);
+    }
+
+    public boolean isClaimed() {
+        return isClaimed;
+    }
+
+    public void setIsClaimed(boolean claimed) {
+        isClaimed = claimed;
     }
 }

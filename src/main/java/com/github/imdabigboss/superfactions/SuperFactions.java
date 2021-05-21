@@ -1,10 +1,9 @@
 package com.github.imdabigboss.superfactions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
+import com.github.imdabigboss.superfactions.claims.ChunkData;
 import com.github.imdabigboss.superfactions.commands.*;
 import com.github.imdabigboss.superfactions.shop.ItemPrices;
 import com.github.imdabigboss.superfactions.shop.ShopNPC;
@@ -13,8 +12,9 @@ import net.jitse.npclib.NPCLib;
 
 import net.milkbowl.vault.economy.Economy;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Particle;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -35,6 +35,10 @@ public class SuperFactions extends JavaPlugin {
     public static String currencySuffix = "";
     public static String currencyName = "";
     public static String currencyNamePlural = "";
+    public static double chunkPrice = 100;
+    public static Map<String, ChunkData> chunkDataMap = new HashMap<>();
+
+    private Particle.DustOptions claimDustOptions = new Particle.DustOptions(Color.fromRGB(0, 255, 0), 2);
 
     @Override
     public void onEnable() {
@@ -70,6 +74,10 @@ public class SuperFactions extends JavaPlugin {
         if (getConfig().contains("currencyNamePlural")) {
             currencyNamePlural = getConfig().getString("currencyNamePlural");
         }
+
+        if (getConfig().contains("chunkPrice")) {
+            chunkPrice = getConfig().getDouble("chunkPrice");
+        }
         getServer().getPluginManager().registerEvents(new EventListener(this), this);
 
         this.getCommand("superfactions").setExecutor(new SuperFactionsCommand(this));
@@ -87,6 +95,71 @@ public class SuperFactions extends JavaPlugin {
             getServer().getServicesManager().register(Economy.class, new VaultConnector(this), this, ServicePriority.Highest);
         }
         shopNPC.createNPC();
+
+        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            @Override
+            public void run() {
+                for (Player player : getServer().getOnlinePlayers()) {
+                    int chunkX = player.getLocation().getBlockX() >> 4;
+                    int chunkZ = player.getLocation().getBlockZ() >> 4;
+                    String world = player.getLocation().getWorld().getName();
+
+                    for (int cx = chunkX - 4; cx <= chunkX + 4; cx++) {
+                        for (int cz = chunkZ - 4; cz <= chunkZ + 4; cz++) {
+                            String chunkName = cx + "|" + cz + "|" + world;
+
+                            loadChunkToClaimMap(chunkName, world);
+                            loadChunksAroundChunkToClaimMap(cx, cz, world);
+
+                            if (!chunkDataMap.get(chunkName).isClaimed()) {
+                                continue;
+                            }
+
+                            int minX = cx * 16;
+                            int maxX = minX + 16;
+
+                            int minY = player.getLocation().getBlockY() - 10;
+                            int maxY = minY + 20;
+
+                            int minZ = cz * 16;
+                            int maxZ = minZ + 16;
+
+                            if (!chunkDataMap.get(cx + "|" + (cz - 1) + "|" + world).getOwner().equalsIgnoreCase(chunkDataMap.get(chunkName).getOwner())) {
+                                for (int x = minX; x <= maxX; x += 2) {
+                                    for (int y = minY; y <= maxY; y += 2) {
+                                        player.spawnParticle(Particle.REDSTONE, x, y, minZ, 1, claimDustOptions);
+                                    }
+                                }
+                            }
+
+                            if (!chunkDataMap.get(cx + "|" + (cz + 1) + "|" + world).getOwner().equalsIgnoreCase(chunkDataMap.get(chunkName).getOwner())) {
+                                for (int x = minX; x <= maxX; x += 2) {
+                                    for (int y = minY; y <= maxY; y += 2) {
+                                        player.spawnParticle(Particle.REDSTONE, x, y, maxZ, 1, claimDustOptions);
+                                    }
+                                }
+                            }
+
+                            if (!chunkDataMap.get((cx - 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(chunkDataMap.get(chunkName).getOwner())) {
+                                for (int z = minZ; z <= maxZ; z += 2) {
+                                    for (int y = minY; y <= maxY; y += 2) {
+                                        player.spawnParticle(Particle.REDSTONE, minX, y, z, 1, claimDustOptions);
+                                    }
+                                }
+                            }
+
+                            if (!chunkDataMap.get((cx + 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(chunkDataMap.get(chunkName).getOwner())) {
+                                for (int z = minZ; z <= maxZ; z += 2) {
+                                    for (int y = minY; y <= maxY; y += 2) {
+                                        player.spawnParticle(Particle.REDSTONE, maxX, y, z, 1, claimDustOptions);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }, 20l, 10l);
     }
 
     @Override
@@ -94,6 +167,42 @@ public class SuperFactions extends JavaPlugin {
         shopNPC.destoryNPC();
         economy.saveEconomy();
         log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
+    }
+
+    /**
+     * Load a chunk to the claim map
+     * @param chunkX Chunk X coordinate
+     * @param chunkZ Chunk Y coordinate
+     */
+    public void loadChunkToClaimMap(int chunkX, int chunkZ, String world) {
+        loadChunkToClaimMap(chunkX + "|" + chunkZ + "|" + world, world);
+    }
+
+    /**
+     * Load a chunk to the claim map
+     * @param chunkName "x|z" coordinates
+     */
+    public void loadChunkToClaimMap(String chunkName, String world) {
+        if (!chunkDataMap.containsKey(chunkName)) {
+            if (claimsYML.getConfig().contains(chunkName)) {
+                if (claimsYML.getConfig().get(chunkName) == null) {
+                    chunkDataMap.put(chunkName, new ChunkData(false, world));
+                } else {
+                    List<String> invited = claimsYML.getConfig().getStringList(chunkName + ".invited");
+                    ChunkData data = new ChunkData(claimsYML.getConfig().getString(chunkName + ".owner"), claimsYML.getConfig().getInt(chunkName + ".chunkX"), claimsYML.getConfig().getInt(chunkName + ".chunkZ"), world, invited);
+                    chunkDataMap.put(chunkName, data);
+                }
+            } else {
+                chunkDataMap.put(chunkName, new ChunkData(false, world));
+            }
+        }
+    }
+
+    public void loadChunksAroundChunkToClaimMap(int chunkX, int chunkZ, String world) {
+        loadChunkToClaimMap(chunkX - 1, chunkZ - 1, world);
+        loadChunkToClaimMap(chunkX - 1, chunkZ + 1, world);
+        loadChunkToClaimMap(chunkX + 1, chunkZ - 1, world);
+        loadChunkToClaimMap(chunkX + 1, chunkZ + 1, world);
     }
 
     /**

@@ -5,7 +5,6 @@ currencySuffix: ''
 
 currencyName: 'dollar'
 currencyNamePlural: 'dollars'
-playerFirstJoinAmount: 100
 
 shopNPCSkin: 1949474697
 shopNPCName: Merchant
@@ -13,3 +12,7 @@ shopSellPercentage: 0.45 #The percentage of the buy price to sell items to the s
 
 enableCrates: true
 dailyCrateCooldown: 86400000 #24h in milliseconds
+
+playerFirstJoinAmount: 100.0
+startChunkAmounnt: 4
+chunkPrice: 100.0
