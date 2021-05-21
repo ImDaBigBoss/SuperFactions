@@ -39,6 +39,7 @@ public class SuperFactions extends JavaPlugin {
     public static Map<String, ChunkData> chunkDataMap = new HashMap<>();
 
     private Particle.DustOptions claimDustOptions = new Particle.DustOptions(Color.fromRGB(0, 255, 0), 2);
+    private Particle.DustOptions reservedClaimDustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 2);
 
     @Override
     public void onEnable() {
@@ -109,7 +110,6 @@ public class SuperFactions extends JavaPlugin {
                             String chunkName = cx + "|" + cz + "|" + world;
 
                             loadChunkToClaimMap(chunkName, world);
-                            loadChunksAroundChunkToClaimMap(cx, cz, world);
 
                             boolean isReserved = chunkDataMap.get(chunkName).isReserved();
 
@@ -130,34 +130,76 @@ public class SuperFactions extends JavaPlugin {
 
                             String currentOwner = chunkDataMap.get(chunkName).getOwner();
 
-                            if (!(chunkDataMap.get(cx + "|" + (cz - 1) + "|" + world).getOwner().equalsIgnoreCase(currentOwner)) || isReserved) {
-                                for (int x = minX; x <= maxX; x += 2) {
-                                    for (int y = minY; y <= maxY; y += 2) {
-                                        player.spawnParticle(Particle.REDSTONE, x, y, minZ, 1, claimDustOptions);
+                            if (isReserved) {
+                                loadChunkToClaimMap(cx, cz - 1, world);
+                                if (!chunkDataMap.get(cx + "|" + (cz - 1) + "|" + world).isReserved()) {
+                                    for (int x = minX; x <= maxX; x += 2) {
+                                        for (int y = minY; y <= maxY; y += 2) {
+                                            player.spawnParticle(Particle.REDSTONE, x, y, minZ, 1, reservedClaimDustOptions);
+                                        }
                                     }
                                 }
-                            }
 
-                            if (!(chunkDataMap.get(cx + "|" + (cz + 1) + "|" + world).getOwner().equalsIgnoreCase(currentOwner)) || isReserved) {
-                                for (int x = minX; x <= maxX; x += 2) {
-                                    for (int y = minY; y <= maxY; y += 2) {
-                                        player.spawnParticle(Particle.REDSTONE, x, y, maxZ, 1, claimDustOptions);
+                                loadChunkToClaimMap(cx, cz + 1, world);
+                                if (!chunkDataMap.get(cx + "|" + (cz + 1) + "|" + world).isReserved()) {
+                                    for (int x = minX; x <= maxX; x += 2) {
+                                        for (int y = minY; y <= maxY; y += 2) {
+                                            player.spawnParticle(Particle.REDSTONE, x, y, maxZ, 1, reservedClaimDustOptions);
+                                        }
                                     }
                                 }
-                            }
 
-                            if (!(chunkDataMap.get((cx - 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(currentOwner)) || isReserved) {
-                                for (int z = minZ; z <= maxZ; z += 2) {
-                                    for (int y = minY; y <= maxY; y += 2) {
-                                        player.spawnParticle(Particle.REDSTONE, minX, y, z, 1, claimDustOptions);
+                                loadChunkToClaimMap(cx - 1, cz, world);
+                                if (!chunkDataMap.get((cx - 1) + "|" + cz + "|" + world).isReserved()) {
+                                    for (int z = minZ; z <= maxZ; z += 2) {
+                                        for (int y = minY; y <= maxY; y += 2) {
+                                            player.spawnParticle(Particle.REDSTONE, minX, y, z, 1, reservedClaimDustOptions);
+                                        }
                                     }
                                 }
-                            }
 
-                            if (!(chunkDataMap.get((cx + 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(currentOwner)) || isReserved) {
-                                for (int z = minZ; z <= maxZ; z += 2) {
-                                    for (int y = minY; y <= maxY; y += 2) {
-                                        player.spawnParticle(Particle.REDSTONE, maxX, y, z, 1, claimDustOptions);
+                                loadChunkToClaimMap(cx + 1, cz, world);
+                                if (!chunkDataMap.get((cx + 1) + "|" + cz + "|" + world).isReserved()) {
+                                    for (int z = minZ; z <= maxZ; z += 2) {
+                                        for (int y = minY; y <= maxY; y += 2) {
+                                            player.spawnParticle(Particle.REDSTONE, maxX, y, z, 1, reservedClaimDustOptions);
+                                        }
+                                    }
+                                }
+                            } else {
+                                loadChunkToClaimMap(cx, cz - 1, world);
+                                if ((!chunkDataMap.get(cx + "|" + (cz - 1) + "|" + world).getOwner().equalsIgnoreCase(currentOwner))) {
+                                    for (int x = minX; x <= maxX; x += 2) {
+                                        for (int y = minY; y <= maxY; y += 2) {
+                                            player.spawnParticle(Particle.REDSTONE, x, y, minZ, 1, claimDustOptions);
+                                        }
+                                    }
+                                }
+
+                                loadChunkToClaimMap(cx, cz + 1, world);
+                                if ((!chunkDataMap.get(cx + "|" + (cz + 1) + "|" + world).getOwner().equalsIgnoreCase(currentOwner))) {
+                                    for (int x = minX; x <= maxX; x += 2) {
+                                        for (int y = minY; y <= maxY; y += 2) {
+                                            player.spawnParticle(Particle.REDSTONE, x, y, maxZ, 1, claimDustOptions);
+                                        }
+                                    }
+                                }
+
+                                loadChunkToClaimMap(cx - 1, cz, world);
+                                if ((!chunkDataMap.get((cx - 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(currentOwner))) {
+                                    for (int z = minZ; z <= maxZ; z += 2) {
+                                        for (int y = minY; y <= maxY; y += 2) {
+                                            player.spawnParticle(Particle.REDSTONE, minX, y, z, 1, claimDustOptions);
+                                        }
+                                    }
+                                }
+
+                                loadChunkToClaimMap(cx + 1, cz, world);
+                                if ((!chunkDataMap.get((cx + 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(currentOwner))) {
+                                    for (int z = minZ; z <= maxZ; z += 2) {
+                                        for (int y = minY; y <= maxY; y += 2) {
+                                            player.spawnParticle(Particle.REDSTONE, maxX, y, z, 1, claimDustOptions);
+                                        }
                                     }
                                 }
                             }
@@ -206,13 +248,6 @@ public class SuperFactions extends JavaPlugin {
                 chunkDataMap.put(chunkName, new ChunkData(false, false, world));
             }
         }
-    }
-
-    public void loadChunksAroundChunkToClaimMap(int chunkX, int chunkZ, String world) {
-        loadChunkToClaimMap(chunkX - 1, chunkZ - 1, world);
-        loadChunkToClaimMap(chunkX - 1, chunkZ + 1, world);
-        loadChunkToClaimMap(chunkX + 1, chunkZ - 1, world);
-        loadChunkToClaimMap(chunkX + 1, chunkZ + 1, world);
     }
 
     /**

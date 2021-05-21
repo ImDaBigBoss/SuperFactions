@@ -24,6 +24,7 @@ public class EventListener implements Listener {
         Player player = event.getPlayer();
         if (!plugin.getConfig().contains("registeredPlayers." + player.getName())) {
             plugin.getConfig().set("registeredPlayers." + player.getName(), player.getUniqueId().toString());
+            plugin.getConfig().set("claims." + player.getUniqueId() + ".chunkAmount", 4);
             plugin.saveConfig();
         }
 
