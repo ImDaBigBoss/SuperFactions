@@ -28,6 +28,21 @@ public class EventListener implements Listener {
             plugin.saveConfig();
         }
 
+        if (plugin.getConfig().contains("claims." + player.getUniqueId() + ".particles")) {
+            String showing = plugin.getConfig().getString("claims." + player.getUniqueId() + ".particles");
+            if (showing == "show") {
+                SuperFactions.particlesShow.put(player.getName(), 2);
+            } else if (showing == "hide") {
+                SuperFactions.particlesShow.put(player.getName(), 0);
+            } else if(showing == "minimal") {
+                SuperFactions.particlesShow.put(player.getName(), 8);
+            } else {
+                SuperFactions.particlesShow.put(player.getName(), 2);
+            }
+        } else {
+            SuperFactions.particlesShow.put(player.getName(), 2);
+        }
+
         SuperFactions.getShopNPC().forceShowNPC(player);
     }
 

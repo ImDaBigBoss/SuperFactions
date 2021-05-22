@@ -30,6 +30,7 @@ public class SuperFactions extends JavaPlugin {
     private static NPCLib npcLib;
     private static ShopNPC shopNPC;
     private static YMLUtils claimsYML = null;
+    private static int taskId;
 
     public static String currencyPrefix = "$";
     public static String currencySuffix = "";
@@ -37,6 +38,7 @@ public class SuperFactions extends JavaPlugin {
     public static String currencyNamePlural = "";
     public static double chunkPrice = 100;
     public static Map<String, ChunkData> chunkDataMap = new HashMap<>();
+    public static Map<String, Integer> particlesShow = new HashMap<>();
 
     private Particle.DustOptions claimDustOptions = new Particle.DustOptions(Color.fromRGB(0, 255, 0), 2);
     private Particle.DustOptions reservedClaimDustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 2);
@@ -97,10 +99,33 @@ public class SuperFactions extends JavaPlugin {
         }
         shopNPC.createNPC();
 
-        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        for (Player player : getServer().getOnlinePlayers()) {
+            if (this.getConfig().contains("claims." + player.getUniqueId() + ".particles")) {
+                String showing = this.getConfig().getString("claims." + player.getUniqueId() + ".particles");
+                if (showing == "show") {
+                    particlesShow.put(player.getName(), 2);
+                } else if (showing == "hide") {
+                    particlesShow.put(player.getName(), 0);
+                } else if(showing == "minimal") {
+                    particlesShow.put(player.getName(), 8);
+                } else {
+                    SuperFactions.particlesShow.put(player.getName(), 2);
+                }
+            } else {
+                particlesShow.put(player.getName(), 2);
+            }
+        }
+
+        taskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
                 for (Player player : getServer().getOnlinePlayers()) {
+                    if (particlesShow.containsKey(player.getName())) {
+                        if (particlesShow.get(player.getName()) == 0) {
+                            continue;
+                        }
+                    }
+
                     int chunkX = player.getLocation().getBlockX() >> 4;
                     int chunkZ = player.getLocation().getBlockZ() >> 4;
                     String world = player.getLocation().getWorld().getName();
@@ -129,12 +154,16 @@ public class SuperFactions extends JavaPlugin {
                             int maxZ = minZ + 16;
 
                             String currentOwner = chunkDataMap.get(chunkName).getOwner();
+                            int particlesAmount = 2;
+                            if (particlesShow.containsKey(player.getName())) {
+                                particlesAmount = particlesShow.get(player.getName());
+                            }
 
                             if (isReserved) {
                                 loadChunkToClaimMap(cx, cz - 1, world);
                                 if (!chunkDataMap.get(cx + "|" + (cz - 1) + "|" + world).isReserved()) {
-                                    for (int x = minX; x <= maxX; x += 2) {
-                                        for (int y = minY; y <= maxY; y += 2) {
+                                    for (int x = minX; x <= maxX; x += particlesAmount) {
+                                        for (int y = minY; y <= maxY; y += particlesAmount) {
                                             player.spawnParticle(Particle.REDSTONE, x, y, minZ, 1, reservedClaimDustOptions);
                                         }
                                     }
@@ -142,8 +171,8 @@ public class SuperFactions extends JavaPlugin {
 
                                 loadChunkToClaimMap(cx, cz + 1, world);
                                 if (!chunkDataMap.get(cx + "|" + (cz + 1) + "|" + world).isReserved()) {
-                                    for (int x = minX; x <= maxX; x += 2) {
-                                        for (int y = minY; y <= maxY; y += 2) {
+                                    for (int x = minX; x <= maxX; x += particlesAmount) {
+                                        for (int y = minY; y <= maxY; y += particlesAmount) {
                                             player.spawnParticle(Particle.REDSTONE, x, y, maxZ, 1, reservedClaimDustOptions);
                                         }
                                     }
@@ -151,8 +180,8 @@ public class SuperFactions extends JavaPlugin {
 
                                 loadChunkToClaimMap(cx - 1, cz, world);
                                 if (!chunkDataMap.get((cx - 1) + "|" + cz + "|" + world).isReserved()) {
-                                    for (int z = minZ; z <= maxZ; z += 2) {
-                                        for (int y = minY; y <= maxY; y += 2) {
+                                    for (int z = minZ; z <= maxZ; z += particlesAmount) {
+                                        for (int y = minY; y <= maxY; y += particlesAmount) {
                                             player.spawnParticle(Particle.REDSTONE, minX, y, z, 1, reservedClaimDustOptions);
                                         }
                                     }
@@ -160,8 +189,8 @@ public class SuperFactions extends JavaPlugin {
 
                                 loadChunkToClaimMap(cx + 1, cz, world);
                                 if (!chunkDataMap.get((cx + 1) + "|" + cz + "|" + world).isReserved()) {
-                                    for (int z = minZ; z <= maxZ; z += 2) {
-                                        for (int y = minY; y <= maxY; y += 2) {
+                                    for (int z = minZ; z <= maxZ; z += particlesAmount) {
+                                        for (int y = minY; y <= maxY; y += particlesAmount) {
                                             player.spawnParticle(Particle.REDSTONE, maxX, y, z, 1, reservedClaimDustOptions);
                                         }
                                     }
@@ -169,8 +198,8 @@ public class SuperFactions extends JavaPlugin {
                             } else {
                                 loadChunkToClaimMap(cx, cz - 1, world);
                                 if ((!chunkDataMap.get(cx + "|" + (cz - 1) + "|" + world).getOwner().equalsIgnoreCase(currentOwner))) {
-                                    for (int x = minX; x <= maxX; x += 2) {
-                                        for (int y = minY; y <= maxY; y += 2) {
+                                    for (int x = minX; x <= maxX; x += particlesAmount) {
+                                        for (int y = minY; y <= maxY; y += particlesAmount) {
                                             player.spawnParticle(Particle.REDSTONE, x, y, minZ, 1, claimDustOptions);
                                         }
                                     }
@@ -178,8 +207,8 @@ public class SuperFactions extends JavaPlugin {
 
                                 loadChunkToClaimMap(cx, cz + 1, world);
                                 if ((!chunkDataMap.get(cx + "|" + (cz + 1) + "|" + world).getOwner().equalsIgnoreCase(currentOwner))) {
-                                    for (int x = minX; x <= maxX; x += 2) {
-                                        for (int y = minY; y <= maxY; y += 2) {
+                                    for (int x = minX; x <= maxX; x += particlesAmount) {
+                                        for (int y = minY; y <= maxY; y += particlesAmount) {
                                             player.spawnParticle(Particle.REDSTONE, x, y, maxZ, 1, claimDustOptions);
                                         }
                                     }
@@ -187,8 +216,8 @@ public class SuperFactions extends JavaPlugin {
 
                                 loadChunkToClaimMap(cx - 1, cz, world);
                                 if ((!chunkDataMap.get((cx - 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(currentOwner))) {
-                                    for (int z = minZ; z <= maxZ; z += 2) {
-                                        for (int y = minY; y <= maxY; y += 2) {
+                                    for (int z = minZ; z <= maxZ; z += particlesAmount) {
+                                        for (int y = minY; y <= maxY; y += particlesAmount) {
                                             player.spawnParticle(Particle.REDSTONE, minX, y, z, 1, claimDustOptions);
                                         }
                                     }
@@ -196,8 +225,8 @@ public class SuperFactions extends JavaPlugin {
 
                                 loadChunkToClaimMap(cx + 1, cz, world);
                                 if ((!chunkDataMap.get((cx + 1) + "|" + cz + "|" + world).getOwner().equalsIgnoreCase(currentOwner))) {
-                                    for (int z = minZ; z <= maxZ; z += 2) {
-                                        for (int y = minY; y <= maxY; y += 2) {
+                                    for (int z = minZ; z <= maxZ; z += particlesAmount) {
+                                        for (int y = minY; y <= maxY; y += particlesAmount) {
                                             player.spawnParticle(Particle.REDSTONE, maxX, y, z, 1, claimDustOptions);
                                         }
                                     }
@@ -212,6 +241,7 @@ public class SuperFactions extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.getServer().getScheduler().cancelTask(taskId);
         shopNPC.destoryNPC();
         economy.saveEconomy();
         log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));

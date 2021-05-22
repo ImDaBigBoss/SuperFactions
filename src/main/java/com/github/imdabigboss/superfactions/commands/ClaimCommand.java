@@ -265,6 +265,23 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
                 } else {
                     sender.sendMessage("Nobody can edit your new chunks by default.");
                 }
+            } else if (args[0].equalsIgnoreCase("particles")) {
+                if (args[1].equalsIgnoreCase("show")) {
+                    plugin.getConfig().set("claims." + player.getUniqueId() + ".particles", "show");
+                    plugin.saveConfig();
+                    SuperFactions.particlesShow.replace(player.getName(), 2);
+                    player.sendMessage(ChatColor.AQUA + "Showing all claim particles.");
+                } else if (args[1].equalsIgnoreCase("hide")) {
+                    plugin.getConfig().set("claims." + player.getUniqueId() + ".particles", "hide");
+                    plugin.saveConfig();
+                    SuperFactions.particlesShow.replace(player.getName(), 0);
+                    player.sendMessage(ChatColor.AQUA + "Not showing any claim particles.");
+                } else if (args[1].equalsIgnoreCase("minimal")) {
+                    plugin.getConfig().set("claims." + player.getUniqueId() + ".particles", "minimal");
+                    plugin.saveConfig();
+                    SuperFactions.particlesShow.replace(player.getName(), 8);
+                    player.sendMessage(ChatColor.AQUA + "Only showing minimal particles.");
+                }
             } else {
                 sendHelp(sender);
             }
@@ -331,7 +348,7 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
                 "\n - revoke <player> -> Disallow a player to edit in your chunk" +
                 "\n - defaultperms invite -> Add a player who can edit your chunks by default" +
                 "\n - defaultperms revoke -> Remove a player who can edit your chunks by default" +
-                "\n -  buy -> Buy a chunk for " + SuperFactions.getEconomy().formatMoney(SuperFactions.chunkPrice) +
+                "\n - buy -> Buy a chunk for " + SuperFactions.getEconomy().formatMoney(SuperFactions.chunkPrice) +
                 "\n - chunkamount -> Get the number of chunks you have left to claim.");
     }
 
@@ -357,6 +374,7 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
             cmd.add("defaultperms");
             cmd.add("buy");
             cmd.add("chunkamount");
+            cmd.add("particles");
             if (plugin.isAdmin(sender)) {
                 cmd.add("reserve");
             }
@@ -371,6 +389,12 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
                 cmd.add("invite");
                 cmd.add("revoke");
                 cmd.add("list");
+                return cmd;
+            } else if (args[0].equalsIgnoreCase("particles")) {
+                List<String> cmd = new ArrayList<>();
+                cmd.add("show");
+                cmd.add("hide");
+                cmd.add("minimal");
                 return cmd;
             }
         } else if (args.length == 3) {
