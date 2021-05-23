@@ -111,7 +111,7 @@ public class ShopGUI {
     };
 
     private static final Material[] mineralItems = {
-            Material.IRON_INGOT, Material.IRON_BLOCK, Material.GOLD_ORE, Material.GOLD_BLOCK,
+            Material.IRON_INGOT, Material.IRON_BLOCK, Material.GOLD_INGOT, Material.GOLD_BLOCK,
             Material.DIAMOND, Material.DIAMOND_BLOCK, Material.LAPIS_LAZULI, Material.LAPIS_BLOCK,
             Material.COAL, Material.COAL_BLOCK, Material.NETHERITE_INGOT, Material.NETHERITE_BLOCK
     };

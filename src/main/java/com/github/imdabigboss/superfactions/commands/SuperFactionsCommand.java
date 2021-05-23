@@ -32,6 +32,7 @@ public class SuperFactionsCommand implements CommandExecutor, TabExecutor {
         } else if (args[0].equalsIgnoreCase("reload")) {
             plugin.reloadConfig();
             SuperFactions.getEconomy().loadEconomy();
+            sender.sendMessage(ChatColor.AQUA + "Economy reloaded!");
             if (plugin.getConfig().contains("currencyPrefix")) {
                 plugin.currencyPrefix = plugin.getConfig().getString("currencyPrefix");
             }
@@ -45,7 +46,10 @@ public class SuperFactionsCommand implements CommandExecutor, TabExecutor {
             if (plugin.getConfig().contains("currencyNamePlural")) {
                 plugin.currencyNamePlural = plugin.getConfig().getString("currencyNamePlural");
             }
-            sender.sendMessage(ChatColor.AQUA + "Economy reloaded!");
+            if (plugin.getConfig().contains("chunkPrice")) {
+                plugin.chunkPrice = plugin.getConfig().getDouble("chunkPrice");
+            }
+            sender.sendMessage(ChatColor.AQUA + "Configurations reloaded!");
         } else if (args[0].equalsIgnoreCase("info")) {
             sender.sendMessage(String.format("%s: version: %s", plugin.getDescription().getName(), plugin.getDescription().getVersion()));
         } else {
