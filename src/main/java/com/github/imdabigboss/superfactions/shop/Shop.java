@@ -41,7 +41,8 @@ public class Shop {
      * @return The item's price
      */
     public static double getItemBuyPrice(ItemStack item) {
-        return getItemBuyPrice(item, 1);
+        double value = getItemBuyPrice(item, 1);
+        return (double) Math.round(value * 100) / 100;
     }
 
     /**
@@ -55,7 +56,8 @@ public class Shop {
             return 0.0;
         }
 
-        return amount * SuperFactions.getPrices().getBuyPrice(item);
+        double value = amount * SuperFactions.getPrices().getBuyPrice(item);
+        return (double) Math.round(value * 100) / 100;
     }
 
     /**
@@ -88,7 +90,8 @@ public class Shop {
      * @return The item's price
      */
     public static double getItemSellPrice(ItemStack item) {
-        return getItemSellPrice(item, 1);
+        double value = getItemSellPrice(item, 1);
+        return (double) Math.round(value * 100) / 100;
     }
 
     /**
@@ -102,7 +105,8 @@ public class Shop {
             return 0.0;
         }
 
-        return amount * SuperFactions.getPrices().getSellPrice(item);
+        double value = amount * SuperFactions.getPrices().getSellPrice(item);
+        return (double) Math.round(value * 100) / 100;
     }
 
     /**
