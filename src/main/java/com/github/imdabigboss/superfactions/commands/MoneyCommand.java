@@ -107,6 +107,52 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
             } catch (NumberFormatException e) {
                 sender.sendMessage(ChatColor.RED + "The new balance entered is not a number");
             }
+        } else if (args[0].equalsIgnoreCase("deposit")) {
+            if (!plugin.isAdmin(sender)) {
+                sendHelp(sender);
+                return true;
+            }
+            if (args.length < 3) {
+                sender.sendMessage(ChatColor.RED + "You must enter a player name and a balance!");
+                return true;
+            }
+
+            try {
+                double balance = Double.valueOf(args[2]);
+                OfflinePlayer player = plugin.getOfflinePlayer(args[1]);
+                if (player != null) {
+                    balance += SuperFactions.getEconomy().getPlayerBalance(player);
+                    SuperFactions.getEconomy().setPlayerBalance(player, balance);
+                    sender.sendMessage(ChatColor.AQUA + args[1] + " now has a balance of " + SuperFactions.getEconomy().formatMoney(balance));
+                } else {
+                    sender.sendMessage(ChatColor.RED + "That player is not registered!");
+                }
+            } catch (NumberFormatException e) {
+                sender.sendMessage(ChatColor.RED + "The new balance entered is not a number");
+            }
+        } else if (args[0].equalsIgnoreCase("withdraw")) {
+            if (!plugin.isAdmin(sender)) {
+                sendHelp(sender);
+                return true;
+            }
+            if (args.length < 3) {
+                sender.sendMessage(ChatColor.RED + "You must enter a player name and a balance!");
+                return true;
+            }
+
+            try {
+                double balance = Double.valueOf(args[2]);
+                OfflinePlayer player = plugin.getOfflinePlayer(args[1]);
+                if (player != null) {
+                    balance = SuperFactions.getEconomy().getPlayerBalance(player) - balance;
+                    SuperFactions.getEconomy().setPlayerBalance(player, balance);
+                    sender.sendMessage(ChatColor.AQUA + args[1] + " now has a balance of " + SuperFactions.getEconomy().formatMoney(balance));
+                } else {
+                    sender.sendMessage(ChatColor.RED + "That player is not registered!");
+                }
+            } catch (NumberFormatException e) {
+                sender.sendMessage(ChatColor.RED + "The new balance entered is not a number");
+            }
         } else {
             sendHelp(sender);
         }
@@ -116,7 +162,7 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
     private void sendHelp(CommandSender sender) {
         String adminCommands = "";
         if (plugin.isAdmin(sender)) {
-            adminCommands = ", get, set";
+            adminCommands = ", get, set, deposit, withdraw";
         }
         sender.sendMessage("Choose one of the following options: send, balance" + adminCommands);
     }
