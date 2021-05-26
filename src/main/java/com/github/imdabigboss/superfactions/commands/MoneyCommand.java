@@ -177,6 +177,8 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
             if (plugin.isAdmin(sender)) {
                 cmds.add("get");
                 cmds.add("set");
+                cmds.add("withdraw");
+                cmds.add("deposit");
             }
             return cmds;
         }

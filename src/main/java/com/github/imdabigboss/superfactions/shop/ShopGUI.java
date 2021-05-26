@@ -54,7 +54,7 @@ public class ShopGUI {
             Material.BIRCH_LOG, Material.BIRCH_PLANKS, Material.JUNGLE_LOG, Material.JUNGLE_PLANKS,
             Material.ACACIA_LOG, Material.ACACIA_PLANKS, Material.DARK_OAK_LOG, Material.DARK_OAK_PLANKS,
             Material.WARPED_STEM, Material.WARPED_PLANKS, Material.CRIMSON_STEM, Material.CRIMSON_PLANKS,
-            Material.GLASS, Material.GLASS_PANE
+            Material.GLASS, Material.GLASS_PANE, Material.SAND
     };
 
     private static final Material[] redstoneItems = {
@@ -107,7 +107,11 @@ public class ShopGUI {
             Material.WHITE_CONCRETE, Material.ORANGE_CONCRETE, Material.MAGENTA_CONCRETE, Material.LIGHT_BLUE_CONCRETE,
             Material.YELLOW_CONCRETE, Material.LIME_CONCRETE, Material.PINK_CONCRETE, Material.GRAY_CONCRETE,
             Material.LIGHT_GRAY_CONCRETE, Material.CYAN_CONCRETE, Material.PURPLE_CONCRETE, Material.BLUE_CONCRETE,
-            Material.BROWN_CONCRETE, Material.GREEN_CONCRETE, Material.RED_CONCRETE, Material.BLACK_CONCRETE
+            Material.BROWN_CONCRETE, Material.GREEN_CONCRETE, Material.RED_CONCRETE, Material.BLACK_CONCRETE,
+            Material.WHITE_DYE, Material.ORANGE_DYE, Material.MAGENTA_DYE, Material.LIGHT_BLUE_DYE,
+            Material.YELLOW_DYE, Material.LIME_DYE, Material.PINK_DYE, Material.GRAY_DYE,
+            Material.LIGHT_GRAY_DYE, Material.CYAN_DYE, Material.PURPLE_DYE, Material.BLUE_DYE,
+            Material.BROWN_DYE, Material.GREEN_DYE, Material.RED_DYE, Material.BLACK_DYE
     };
 
     private static final Material[] mineralItems = {
@@ -130,7 +134,7 @@ public class ShopGUI {
     };
 
     private static final Material[] mobDropItems = {
-            Material.BONE, Material.ARROW, Material.GUNPOWDER, Material.STRING,
+            Material.BONE, Material.ARROW, Material.GUNPOWDER, Material.STRING, Material.FEATHER,
             Material.RABBIT_FOOT, Material.SPIDER_EYE, Material.EGG, Material.SLIME_BALL,
             Material.INK_SAC, Material.BLAZE_ROD, Material.ENDER_PEARL, Material.PHANTOM_MEMBRANE,
             Material.MAGMA_CREAM, Material.ROTTEN_FLESH, Material.GHAST_TEAR
@@ -274,7 +278,7 @@ public class ShopGUI {
                     }
 
                     return true;
-                }, Shop.formatItemName(material), "Price per piece: " + SuperFactions.getEconomy().formatMoney(Shop.getItemBuyPrice(item))));
+                }, Shop.formatItemName(material), "Buy price per piece: " + SuperFactions.getEconomy().formatMoney(Shop.getItemBuyPrice(item)), "Sell price per piece: " + SuperFactions.getEconomy().formatMoney(Shop.getItemSellPrice(item))));
             }
         }
         buyGui.addElement(group);
@@ -383,7 +387,7 @@ public class ShopGUI {
                         }
 
                         return true;
-                    }, Shop.formatItemName(item), "Sell price: " + SuperFactions.getEconomy().formatMoney(Shop.getItemSellPrice(item, item.getAmount()))
+                    }, Shop.formatItemName(item), "Sell price: " + SuperFactions.getEconomy().formatMoney(Shop.getItemSellPrice(item, item.getAmount())), "Buy price: " + SuperFactions.getEconomy().formatMoney(Shop.getItemBuyPrice(item, item.getAmount()))
                     ));
                 }
             }
