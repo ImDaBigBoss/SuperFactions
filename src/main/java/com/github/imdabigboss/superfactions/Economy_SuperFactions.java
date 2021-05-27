@@ -105,7 +105,7 @@ public class Economy_SuperFactions {
      * @return The formatted string
      */
     public String formatMoney(double money) {
-        return plugin.currencyPrefix + money + plugin.currencySuffix;
+        return plugin.currencyPrefix + ((double)Math.round(money * 100) / 100) + plugin.currencySuffix;
     }
 
     /**
@@ -128,7 +128,7 @@ public class Economy_SuperFactions {
      */
     public void saveEconomy() {
         for (OfflinePlayer player : playerBalances.keySet()) {
-            plugin.getConfig().set("economy." + player.getUniqueId().toString(), playerBalances.get(player));
+            plugin.getConfig().set("economy." + player.getUniqueId(), playerBalances.get(player));
         }
         plugin.saveConfig();
     }
@@ -138,7 +138,7 @@ public class Economy_SuperFactions {
      * @param player The offline player
      */
     public void saveEconomy(OfflinePlayer player) {
-        plugin.getConfig().set("economy." + player.getUniqueId().toString(), playerBalances.get(player));
+        plugin.getConfig().set("economy." + player.getUniqueId(), playerBalances.get(player));
         plugin.saveConfig();
     }
 }

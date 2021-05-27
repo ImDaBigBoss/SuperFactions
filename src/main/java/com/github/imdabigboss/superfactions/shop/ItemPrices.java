@@ -189,7 +189,6 @@ public class ItemPrices {
         prices.put("CRACKED_POLISHED_BLACKSTONE_BRICKS", 0.54);
         prices.put("CRACKED_STONE_BRICKS", 0.6);
         prices.put("CRAFTING_TABLE", 1.7);
-        prices.put("CREEPER_HEAD", 4000.0);
         prices.put("CREEPER_SPAWN_EGG", 366.0);
         prices.put("CRIMSON_BUTTON", 0.48);
         prices.put("CRIMSON_DOOR", 0.83);
@@ -269,7 +268,6 @@ public class ItemPrices {
         prices.put("DONKEY_SPAWN_EGG", 1200.0);
         prices.put("DRAGON_BREATH", 6.12);
         prices.put("DRAGON_EGG", 9000.0);
-        prices.put("DRAGON_HEAD", 125000.0);
         prices.put("DRIED_KELP", 2.19);
         prices.put("DRIED_KELP_BLOCK", 19.71);
         prices.put("DROPPER", 2.15);
@@ -873,7 +871,6 @@ public class ItemPrices {
         prices.put("YELLOW_STAINED_GLASS_PANE", 0.76);
         prices.put("YELLOW_TERRACOTTA", 1.41);
         prices.put("YELLOW_WOOL", 4.08);
-        prices.put("ZOMBIE_HEAD", 7500.0);
         prices.put("ZOMBIE_HORSE_SPAWN_EGG", 12500.0);
         prices.put("ZOMBIE_PIGMAN_SPAWN_EGG", 65.0);
         prices.put("ZOMBIE_SPAWN_EGG", 25.0);

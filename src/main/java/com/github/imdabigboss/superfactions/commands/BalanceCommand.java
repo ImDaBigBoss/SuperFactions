@@ -26,7 +26,7 @@ public class BalanceCommand implements CommandExecutor {
 
         OfflinePlayer player = plugin.getOfflinePlayer((Player) sender);
         double balance = SuperFactions.getEconomy().getPlayerBalance(player);
-        sender.sendMessage(ChatColor.AQUA + "You have a balance of " + SuperFactions.getEconomy().formatMoney((double) Math.round(balance * 100) / 100));
+        sender.sendMessage(ChatColor.AQUA + "You have a balance of " + SuperFactions.getEconomy().formatMoney(balance));
         return true;
     }
 }
