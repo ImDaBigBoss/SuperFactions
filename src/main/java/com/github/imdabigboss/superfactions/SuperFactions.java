@@ -30,7 +30,6 @@ public class SuperFactions extends JavaPlugin {
     private static NPCLib npcLib;
     private static ShopNPC shopNPC;
     private static YMLUtils claimsYML = null;
-    private static int taskId;
 
     public static String currencyPrefix = "$";
     public static String currencySuffix = "";
@@ -39,6 +38,7 @@ public class SuperFactions extends JavaPlugin {
     public static double chunkPrice = 100;
     public static Map<String, ChunkData> chunkDataMap = new HashMap<>();
     public static Map<String, Integer> particlesShow = new HashMap<>();
+    public static List<String> claimBypass = new ArrayList<>();
 
     private Particle.DustOptions claimDustOptions = new Particle.DustOptions(Color.fromRGB(0, 255, 0), 2);
     private Particle.DustOptions reservedClaimDustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 2);
@@ -116,12 +116,26 @@ public class SuperFactions extends JavaPlugin {
             }
         }
 
-        taskId = this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
+                if (chunkDataMap.size() == 10000) {
+                    chunkDataMap.clear();
+                }
+
                 for (Player player : getServer().getOnlinePlayers()) {
                     if (particlesShow.containsKey(player.getName())) {
                         if (particlesShow.get(player.getName()) == 0) {
+                            int chunkX = player.getLocation().getBlockX() >> 4;
+                            int chunkZ = player.getLocation().getBlockZ() >> 4;
+                            String world = player.getLocation().getWorld().getName();
+
+                            for (int cx = chunkX - 1; cx <= chunkX + 1; cx++) {
+                                for (int cz = chunkZ - 1; cz <= chunkZ + 1; cz++) {
+                                    String chunkName = cx + "|" + cz + "|" + world;
+                                    loadChunkToClaimMap(chunkName, world);
+                                }
+                            }
                             continue;
                         }
                     }
@@ -241,7 +255,7 @@ public class SuperFactions extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.getServer().getScheduler().cancelTask(taskId);
+        this.getServer().getScheduler().cancelTasks(this);
         shopNPC.destoryNPC();
         economy.saveEconomy();
         log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));

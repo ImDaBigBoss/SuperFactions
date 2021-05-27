@@ -375,6 +375,16 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
             } else {
                 sendHelp(sender);
             }
+        } else if (args[0].equalsIgnoreCase("bypass")) {
+            if (SuperFactions.claimBypass.contains(player.getName())) {
+                SuperFactions.claimBypass.remove(player.getName());
+
+                sender.sendMessage(ChatColor.AQUA + "You can no longer bypass claim restrictions.");
+            } else {
+                SuperFactions.claimBypass.add(player.getName());
+
+                sender.sendMessage(ChatColor.AQUA + "You can now bypass claim restrictions!");
+            }
         } else {
             sendHelp(sender);
         }
@@ -419,6 +429,7 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
             cmd.add("particles");
             if (plugin.isAdmin(sender)) {
                 cmd.add("reserve");
+                cmd.add("bypass");
             }
             return cmd;
         } else if (args.length == 2) {

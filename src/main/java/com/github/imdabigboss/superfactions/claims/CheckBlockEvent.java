@@ -10,9 +10,15 @@ public class CheckBlockEvent {
         if (player == null) {
             return false;
         }
+        if (SuperFactions.claimBypass.contains(player.getName())) {
+            return false;
+        }
 
         String chunkName = chunk.getX() + "|" + chunk.getZ() + "|" + player.getLocation().getWorld().getName();
 
+        if (!SuperFactions.chunkDataMap.containsKey(chunkName)) {
+            return true;
+        }
         if (SuperFactions.chunkDataMap.get(chunkName).isClaimed()) {
             if (SuperFactions.chunkDataMap.get(chunkName).isReserved()) {
                 return false;
