@@ -49,6 +49,21 @@ public class SuperFactionsCommand implements CommandExecutor, TabExecutor {
             if (plugin.getConfig().contains("chunkPrice")) {
                 plugin.chunkPrice = plugin.getConfig().getDouble("chunkPrice");
             }
+            if (plugin.getConfig().contains("claimsEnabled")) {
+                boolean wasEnabled = plugin.claimsEnabled;
+                plugin.claimsEnabled = plugin.getConfig().getBoolean("claimsEnabled");
+
+                if (SuperFactions.claimsEnabled) {
+                    if (!wasEnabled) {
+                        plugin.claimParticlesLoop();
+                    }
+                } else {
+                    if (wasEnabled) {
+                        plugin.getServer().getScheduler().cancelTasks(plugin);
+                    }
+                }
+            }
+
             sender.sendMessage(ChatColor.AQUA + "Configurations reloaded!");
         } else if (args[0].equalsIgnoreCase("info")) {
             sender.sendMessage(String.format("%s: version: %s", plugin.getDescription().getName(), plugin.getDescription().getVersion()));

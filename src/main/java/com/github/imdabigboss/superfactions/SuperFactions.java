@@ -36,6 +36,8 @@ public class SuperFactions extends JavaPlugin {
     public static String currencyName = "";
     public static String currencyNamePlural = "";
     public static double chunkPrice = 100;
+    public static boolean claimsEnabled = true;
+
     public static Map<String, ChunkData> chunkDataMap = new HashMap<>();
     public static Map<String, Integer> particlesShow = new HashMap<>();
     public static List<String> claimBypass = new ArrayList<>();
@@ -81,6 +83,9 @@ public class SuperFactions extends JavaPlugin {
         if (getConfig().contains("chunkPrice")) {
             chunkPrice = getConfig().getDouble("chunkPrice");
         }
+        if (getConfig().contains("claimsEnabled")) {
+            claimsEnabled = getConfig().getBoolean("claimsEnabled");
+        }
         getServer().getPluginManager().registerEvents(new EventListener(this), this);
 
         this.getCommand("superfactions").setExecutor(new SuperFactionsCommand(this));
@@ -116,6 +121,116 @@ public class SuperFactions extends JavaPlugin {
             }
         }
 
+        if (claimsEnabled) {
+            claimParticlesLoop();
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        this.getServer().getScheduler().cancelTasks(this);
+        shopNPC.destoryNPC();
+        economy.saveEconomy();
+        log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
+    }
+
+    /**
+     * Load a chunk to the claim map
+     * @param chunkX Chunk X coordinate
+     * @param chunkZ Chunk Y coordinate
+     */
+    public void loadChunkToClaimMap(int chunkX, int chunkZ, String world) {
+        loadChunkToClaimMap(chunkX + "|" + chunkZ + "|" + world, world);
+    }
+
+    /**
+     * Load a chunk to the claim map
+     * @param chunkName "x|z" coordinates
+     */
+    public void loadChunkToClaimMap(String chunkName, String world) {
+        if (!chunkDataMap.containsKey(chunkName)) {
+            if (claimsYML.getConfig().contains(chunkName)) {
+                if (claimsYML.getConfig().get(chunkName) == null) {
+                    chunkDataMap.put(chunkName, new ChunkData(false, false, world));
+                } else {
+                    if (claimsYML.getConfig().getBoolean(chunkName + ".isReserved")) {
+                        chunkDataMap.put(chunkName, new ChunkData(true, true, world));
+                    } else {
+                        List<String> invited = claimsYML.getConfig().getStringList(chunkName + ".invited");
+                        ChunkData data = new ChunkData(claimsYML.getConfig().getString(chunkName + ".owner"), world, invited);
+                        chunkDataMap.put(chunkName, data);
+                    }
+                }
+            } else {
+                chunkDataMap.put(chunkName, new ChunkData(false, false, world));
+            }
+        }
+    }
+
+    /**
+     * Get if a command sender has the admin permissions or if they are the console
+     * @param sender The command sender
+     * @return true if the player is an admin, false if not
+     */
+    public boolean isAdmin(CommandSender sender) {
+        if (sender instanceof ConsoleCommandSender) {
+            return true;
+        } else if (sender instanceof Player) {
+            if (((Player)sender).hasPermission("superfactions.admin")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get a list of all online players
+     * @return A list of strings
+     */
+    public List<String> getAllPlayers() {
+        List<String> players = new ArrayList<>();
+        for (Player player : getServer().getOnlinePlayers()) {
+            players.add(player.getName());
+        }
+        return players;
+    }
+
+    /**
+     * Get an offline player by a Bukkit Player class
+     * @param player The player in question
+     * @return The offline player
+     */
+    public OfflinePlayer getOfflinePlayer(Player player) {
+        return getServer().getOfflinePlayer(player.getUniqueId());
+    }
+
+    /**
+     * Get an offline player from a UUID
+     * @param uuid The player's UUID
+     * @return The offline player (can be null)
+     */
+    public OfflinePlayer getOfflinePlayer(UUID uuid) {
+        return getServer().getOfflinePlayer(uuid);
+    }
+
+    /**
+     * Get an offline player from a String
+     * This looks in the regiestered players in the config
+     * @param name The player's name
+     * @return The offline player (will be null if the player is not registered)
+     */
+    public OfflinePlayer getOfflinePlayer(String name) {
+        if (!getConfig().contains("registeredPlayers." + name)) {
+            return null;
+        }
+
+        return getOfflinePlayer(UUID.fromString(getConfig().getString("registeredPlayers." + name)));
+    }
+
+    /**
+     * Enables the claim loop
+     */
+    public void claimParticlesLoop() {
         this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             @Override
             public void run() {
@@ -251,107 +366,6 @@ public class SuperFactions extends JavaPlugin {
                 }
             }
         }, 20l, 10l);
-    }
-
-    @Override
-    public void onDisable() {
-        this.getServer().getScheduler().cancelTasks(this);
-        shopNPC.destoryNPC();
-        economy.saveEconomy();
-        log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
-    }
-
-    /**
-     * Load a chunk to the claim map
-     * @param chunkX Chunk X coordinate
-     * @param chunkZ Chunk Y coordinate
-     */
-    public void loadChunkToClaimMap(int chunkX, int chunkZ, String world) {
-        loadChunkToClaimMap(chunkX + "|" + chunkZ + "|" + world, world);
-    }
-
-    /**
-     * Load a chunk to the claim map
-     * @param chunkName "x|z" coordinates
-     */
-    public void loadChunkToClaimMap(String chunkName, String world) {
-        if (!chunkDataMap.containsKey(chunkName)) {
-            if (claimsYML.getConfig().contains(chunkName)) {
-                if (claimsYML.getConfig().get(chunkName) == null) {
-                    chunkDataMap.put(chunkName, new ChunkData(false, false, world));
-                } else {
-                    if (claimsYML.getConfig().getBoolean(chunkName + ".isReserved")) {
-                        chunkDataMap.put(chunkName, new ChunkData(true, true, world));
-                    } else {
-                        List<String> invited = claimsYML.getConfig().getStringList(chunkName + ".invited");
-                        ChunkData data = new ChunkData(claimsYML.getConfig().getString(chunkName + ".owner"), world, invited);
-                        chunkDataMap.put(chunkName, data);
-                    }
-                }
-            } else {
-                chunkDataMap.put(chunkName, new ChunkData(false, false, world));
-            }
-        }
-    }
-
-    /**
-     * Get if a command sender has the admin permissions or if they are the console
-     * @param sender The command sender
-     * @return true if the player is an admin, false if not
-     */
-    public boolean isAdmin(CommandSender sender) {
-        if (sender instanceof ConsoleCommandSender) {
-            return true;
-        } else if (sender instanceof Player) {
-            if (((Player)sender).hasPermission("superfactions.admin")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Get a list of all online players
-     * @return A list of strings
-     */
-    public List<String> getAllPlayers() {
-        List<String> players = new ArrayList<>();
-        for (Player player : getServer().getOnlinePlayers()) {
-            players.add(player.getName());
-        }
-        return players;
-    }
-
-    /**
-     * Get an offline player by a Bukkit Player class
-     * @param player The player in question
-     * @return The offline player
-     */
-    public OfflinePlayer getOfflinePlayer(Player player) {
-        return getServer().getOfflinePlayer(player.getUniqueId());
-    }
-
-    /**
-     * Get an offline player from a UUID
-     * @param uuid The player's UUID
-     * @return The offline player (can be null)
-     */
-    public OfflinePlayer getOfflinePlayer(UUID uuid) {
-        return getServer().getOfflinePlayer(uuid);
-    }
-
-    /**
-     * Get an offline player from a String
-     * This looks in the regiestered players in the config
-     * @param name The player's name
-     * @return The offline player (will be null if the player is not registered)
-     */
-    public OfflinePlayer getOfflinePlayer(String name) {
-        if (!getConfig().contains("registeredPlayers." + name)) {
-            return null;
-        }
-
-        return getOfflinePlayer(UUID.fromString(getConfig().getString("registeredPlayers." + name)));
     }
 
     public static Logger getLog() {

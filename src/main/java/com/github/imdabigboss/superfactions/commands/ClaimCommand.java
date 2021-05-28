@@ -27,6 +27,11 @@ public class ClaimCommand implements CommandExecutor, TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!SuperFactions.claimsEnabled) {
+            sender.sendMessage(ChatColor.RED + "Claims are not enabled!");
+            return true;
+        }
+
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "You must be a player to use this command");
             return true;
