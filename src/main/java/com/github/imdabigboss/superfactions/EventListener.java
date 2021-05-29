@@ -54,6 +54,8 @@ public class EventListener implements Listener {
         OfflinePlayer offlinePlayer = plugin.getOfflinePlayer(player);
         if (offlinePlayer != null) {
             SuperFactions.getEconomy().saveEconomy(offlinePlayer);
+        } else {
+            SuperFactions.getLog().severe("Unable to get a player account! PlayerQuitEvent");
         }
     }
 
