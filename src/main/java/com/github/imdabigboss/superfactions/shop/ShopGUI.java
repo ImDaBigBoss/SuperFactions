@@ -54,7 +54,7 @@ public class ShopGUI {
             Material.BIRCH_LOG, Material.BIRCH_PLANKS, Material.JUNGLE_LOG, Material.JUNGLE_PLANKS,
             Material.ACACIA_LOG, Material.ACACIA_PLANKS, Material.DARK_OAK_LOG, Material.DARK_OAK_PLANKS,
             Material.WARPED_STEM, Material.WARPED_PLANKS, Material.CRIMSON_STEM, Material.CRIMSON_PLANKS,
-            Material.GLASS, Material.GLASS_PANE, Material.SAND
+            Material.GLASS, Material.GLASS_PANE, Material.SAND, Material.SANDSTONE
     };
 
     private static final Material[] redstoneItems = {
@@ -117,7 +117,8 @@ public class ShopGUI {
     private static final Material[] mineralItems = {
             Material.IRON_INGOT, Material.IRON_BLOCK, Material.GOLD_INGOT, Material.GOLD_BLOCK,
             Material.DIAMOND, Material.DIAMOND_BLOCK, Material.LAPIS_LAZULI, Material.LAPIS_BLOCK,
-            Material.COAL, Material.COAL_BLOCK, Material.NETHERITE_INGOT, Material.NETHERITE_BLOCK
+            Material.COAL, Material.COAL_BLOCK, Material.NETHERITE_INGOT, Material.NETHERITE_BLOCK,
+            Material.QUARTZ, Material.QUARTZ_BLOCK
     };
 
     private static final Material[] seedsAndFoodItems = {

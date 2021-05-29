@@ -46,6 +46,13 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
                 return true;
             }
 
+            String message = "";
+            if (args.length > 3) {
+                for (int i = 3; i < args.length; i++) {
+                    message += args[i] + " ";
+                }
+            }
+
             try {
                 double amount = Double.valueOf(args[2]);
                 OfflinePlayer player = plugin.getOfflinePlayer(args[1]);
@@ -60,7 +67,11 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
                     sender.sendMessage(ChatColor.AQUA + "You sent " + SuperFactions.getEconomy().formatMoney(amount) + " to " + args[1] + "'s account!");
                     Player p = plugin.getServer().getPlayer(args[1]);
                     if (p != null) {
-                        p.sendMessage(ChatColor.AQUA + sender.getName() + " sent you " + SuperFactions.getEconomy().formatMoney(amount));
+                        if (message != "") {
+                            p.sendMessage(ChatColor.AQUA + sender.getName() + " sent you " + SuperFactions.getEconomy().formatMoney(amount) + ". " + message);
+                        } else {
+                            p.sendMessage(ChatColor.AQUA + sender.getName() + " sent you " + SuperFactions.getEconomy().formatMoney(amount));
+                        }
                     }
                 } else {
                     sender.sendMessage(ChatColor.RED + "That player is not registered!");
@@ -182,7 +193,7 @@ public class MoneyCommand implements CommandExecutor, TabExecutor {
         }
 
         if (args.length == 2) {
-            if (plugin.isAdmin(sender) && (args[0].equalsIgnoreCase("get") || args[0].equalsIgnoreCase("set"))) {
+            if (plugin.isAdmin(sender) && (args[0].equalsIgnoreCase("get") || args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("deposit") || args[0].equalsIgnoreCase("withdraw"))) {
                 return plugin.getAllPlayers();
             } else if (args[0].equalsIgnoreCase("send")) {
                 return plugin.getAllPlayers();

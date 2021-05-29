@@ -56,21 +56,29 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
-        event.setCancelled(CheckBlockEvent.checkBlockEvent(event.getPlayer(), event.getBlock().getChunk()));
+        if (SuperFactions.claimsEnabled) {
+            event.setCancelled(CheckBlockEvent.checkBlockEvent(event.getPlayer(), event.getBlock().getChunk()));
+        }
     }
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        event.setCancelled(CheckBlockEvent.checkBlockEvent(event.getPlayer(), event.getBlock().getChunk()));
+        if (SuperFactions.claimsEnabled) {
+            event.setCancelled(CheckBlockEvent.checkBlockEvent(event.getPlayer(), event.getBlock().getChunk()));
+        }
     }
 
     @EventHandler
-    public void onBlockFertilizeEvent(BlockFertilizeEvent event) {
-        event.setCancelled(CheckBlockEvent.checkBlockEvent(event.getPlayer(), event.getBlock().getChunk()));
+    public void onBlockFertilizeEvent(BlockFertilizeEvent event){
+        if (SuperFactions.claimsEnabled) {
+            event.setCancelled(CheckBlockEvent.checkBlockEvent(event.getPlayer(), event.getBlock().getChunk()));
+        }
     }
 
     @EventHandler
     public void onIgniteEvent(BlockIgniteEvent event) {
-        event.setCancelled(CheckBlockEvent.checkBlockEvent(event.getPlayer(), event.getBlock().getChunk()));
+        if (SuperFactions.claimsEnabled) {
+            event.setCancelled(CheckBlockEvent.checkBlockEvent(event.getPlayer(), event.getBlock().getChunk()));
+        }
     }
 }
