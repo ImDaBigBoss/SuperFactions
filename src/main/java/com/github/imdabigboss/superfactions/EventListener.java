@@ -6,11 +6,13 @@ import com.github.imdabigboss.superfactions.shop.ShopGUI;
 import net.jitse.npclib.api.events.NPCInteractEvent;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class EventListener implements Listener {
     private SuperFactions plugin;
@@ -44,6 +46,15 @@ public class EventListener implements Listener {
         }
 
         SuperFactions.getShopNPC().forceShowNPC(player);
+    }
+
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        OfflinePlayer offlinePlayer = plugin.getOfflinePlayer(player);
+        if (offlinePlayer != null) {
+            SuperFactions.getEconomy().saveEconomy(offlinePlayer);
+        }
     }
 
     @EventHandler

@@ -81,6 +81,7 @@ public class Economy_SuperFactions {
     public boolean createPlayerAccount(OfflinePlayer player) {
         if (!playerHasAccount(player)) {
             playerBalances.put(player, plugin.getConfig().getDouble("playerFirstJoinAmount"));
+            saveEconomy(player);
             return false;
         } else {
             return true;
