@@ -66,8 +66,9 @@ public class Shop {
      * @param material The item's material to buy
      * @param amount The amount of the item to buy
      */
-    public static void sellItem(Player player, Material material, int amount, int invIndex) {
+    public static void sellItem(Player player, int invIndex) {
         ItemStack item = player.getInventory().getItem(invIndex);
+        int amount = item.getAmount();
 
         if (!player.getInventory().containsAtLeast(item, amount)) {
             player.sendMessage(ChatColor.RED + "You don't have that item in your inventory, you can't sell it.");
@@ -75,7 +76,6 @@ public class Shop {
         }
 
         double price = getItemSellPrice(item, amount);
-        item.setAmount(amount);
         OfflinePlayer oplayer = SuperFactions.getInstance().getOfflinePlayer(player);
 
         SuperFactions.getEconomy().playerDeposit(oplayer, price);

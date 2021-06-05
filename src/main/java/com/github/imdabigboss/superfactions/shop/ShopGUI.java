@@ -54,7 +54,7 @@ public class ShopGUI {
             Material.BIRCH_LOG, Material.BIRCH_PLANKS, Material.JUNGLE_LOG, Material.JUNGLE_PLANKS,
             Material.ACACIA_LOG, Material.ACACIA_PLANKS, Material.DARK_OAK_LOG, Material.DARK_OAK_PLANKS,
             Material.WARPED_STEM, Material.WARPED_PLANKS, Material.CRIMSON_STEM, Material.CRIMSON_PLANKS,
-            Material.GLASS, Material.GLASS_PANE, Material.SAND, Material.SANDSTONE
+            Material.GLASS, Material.GLASS_PANE, Material.SAND, Material.SANDSTONE, Material.OBSIDIAN
     };
 
     private static final Material[] redstoneItems = {
@@ -69,9 +69,8 @@ public class ShopGUI {
 
     private static final Material[] decorationItems = {
             Material.OAK_LEAVES, Material.SPRUCE_LEAVES, Material.BIRCH_LEAVES, Material.JUNGLE_LEAVES, Material.ACACIA_LEAVES, Material.DARK_OAK_LEAVES,
-            Material.FERN, Material.LARGE_FERN, Material.DEAD_BUSH, Material.SEAGRASS,
-            Material.GRASS, Material.TALL_GRASS,
-            Material.POPPY, Material.DANDELION, Material.OXEYE_DAISY, Material.CORNFLOWER,
+            Material.FERN, Material.LARGE_FERN, Material.DEAD_BUSH, Material.SEAGRASS, Material.GRASS,
+            Material.TALL_GRASS, Material.POPPY, Material.DANDELION, Material.OXEYE_DAISY, Material.CORNFLOWER,
             Material.ROSE_BUSH, Material.PEONY, Material.BLUE_ORCHID, Material.ALLIUM,
             Material.AZURE_BLUET, Material.RED_TULIP, Material.ORANGE_TULIP, Material.WHITE_TULIP,
             Material.PINK_TULIP, Material.LILY_OF_THE_VALLEY, Material.FLOWER_POT, Material.SWEET_BERRIES,
@@ -131,14 +130,14 @@ public class ShopGUI {
             Material.PORKCHOP, Material.COOKED_PORKCHOP, Material.MUTTON, Material.COOKED_MUTTON,
             Material.RABBIT, Material.COOKED_RABBIT, Material.BROWN_MUSHROOM, Material.RED_MUSHROOM,
             Material.MUSHROOM_STEW, Material.OAK_SAPLING, Material.SPRUCE_SAPLING, Material.BIRCH_SAPLING,
-            Material.JUNGLE_SAPLING, Material.ACACIA_SAPLING, Material.DARK_OAK_SAPLING,
+            Material.JUNGLE_SAPLING, Material.ACACIA_SAPLING, Material.DARK_OAK_SAPLING
     };
 
     private static final Material[] mobDropItems = {
             Material.BONE, Material.ARROW, Material.GUNPOWDER, Material.STRING, Material.FEATHER,
             Material.RABBIT_FOOT, Material.SPIDER_EYE, Material.EGG, Material.SLIME_BALL,
             Material.INK_SAC, Material.BLAZE_ROD, Material.ENDER_PEARL, Material.PHANTOM_MEMBRANE,
-            Material.MAGMA_CREAM, Material.ROTTEN_FLESH, Material.GHAST_TEAR
+            Material.MAGMA_CREAM, Material.ROTTEN_FLESH, Material.GHAST_TEAR, Material.LEATHER
     };
 
     private static final Material[] miscItems = {
@@ -381,7 +380,7 @@ public class ShopGUI {
                     group.addElement(new StaticGuiElement('e', item, item.getAmount(), click -> {
                         ItemStack clickedItem = click.getEvent().getCurrentItem();
                         if (clickedItem != null) {
-                            Shop.sellItem(player, clickedItem.getType(), clickedItem.getAmount(), itemIndex);
+                            Shop.sellItem(player, itemIndex);
                             group.clearElements();
                             GUIElementsOfPlayerInv(player, group, reopenShop, sellGui);
                             sellGui.show(player, true);
