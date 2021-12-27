@@ -1,9 +1,9 @@
 package com.github.imdabigboss.superfactions.claims;
 
 import com.github.imdabigboss.superfactions.SuperFactions;
+
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
-
 
 public class CheckBlockEvent {
     public static boolean checkBlockEvent(Player player, Chunk chunk) {

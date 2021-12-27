@@ -6,9 +6,6 @@ import java.util.logging.Logger;
 import com.github.imdabigboss.superfactions.claims.ChunkData;
 import com.github.imdabigboss.superfactions.commands.*;
 import com.github.imdabigboss.superfactions.shop.ItemPrices;
-import com.github.imdabigboss.superfactions.shop.ShopNPC;
-
-import net.jitse.npclib.NPCLib;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -27,8 +24,6 @@ public class SuperFactions extends JavaPlugin {
     private static SuperFactions instance = null;
     private static Economy_SuperFactions economy = null;
     private static ItemPrices prices = null;
-    private static NPCLib npcLib;
-    private static ShopNPC shopNPC;
     private static YMLUtils claimsYML = null;
 
     public static String currencyPrefix = "$";
@@ -54,8 +49,6 @@ public class SuperFactions extends JavaPlugin {
 
         economy = new Economy_SuperFactions(this);
         prices = new ItemPrices(this);
-        npcLib = new NPCLib(this);
-        shopNPC = new ShopNPC(this);
         claimsYML = new YMLUtils("claims.yml");
 
         if (getConfig().contains("version")) {
@@ -102,16 +95,15 @@ public class SuperFactions extends JavaPlugin {
             log.info(String.format("[%s] Enabled Vault connector. Vault version: %s", getDescription().getName(), vault.getDescription().getVersion()));
             getServer().getServicesManager().register(Economy.class, new VaultConnector(this), this, ServicePriority.Highest);
         }
-        shopNPC.createNPC();
 
         for (Player player : getServer().getOnlinePlayers()) {
             if (this.getConfig().contains("claims." + player.getUniqueId() + ".particles")) {
                 String showing = this.getConfig().getString("claims." + player.getUniqueId() + ".particles");
-                if (showing == "show") {
+                if (showing.equalsIgnoreCase("show")) {
                     particlesShow.put(player.getName(), 2);
-                } else if (showing == "hide") {
+                } else if (showing.equalsIgnoreCase("hide")) {
                     particlesShow.put(player.getName(), 0);
-                } else if(showing == "minimal") {
+                } else if(showing.equalsIgnoreCase("minimal")) {
                     particlesShow.put(player.getName(), 8);
                 } else {
                     SuperFactions.particlesShow.put(player.getName(), 2);
@@ -129,7 +121,6 @@ public class SuperFactions extends JavaPlugin {
     @Override
     public void onDisable() {
         this.getServer().getScheduler().cancelTasks(this);
-        shopNPC.destoryNPC();
         economy.saveEconomy();
         log.info(String.format("[%s] Disabled Version %s", getDescription().getName(), getDescription().getVersion()));
     }
@@ -376,12 +367,6 @@ public class SuperFactions extends JavaPlugin {
     }
     public static ItemPrices getPrices() {
         return prices;
-    }
-    public static NPCLib getNPC() {
-        return npcLib;
-    }
-    public static ShopNPC getShopNPC() {
-        return shopNPC;
     }
     public static YMLUtils getClaimsYML() {
         return claimsYML;

@@ -1,11 +1,7 @@
 package com.github.imdabigboss.superfactions;
 
 import com.github.imdabigboss.superfactions.claims.CheckBlockEvent;
-import com.github.imdabigboss.superfactions.shop.ShopGUI;
 
-import net.jitse.npclib.api.events.NPCInteractEvent;
-
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,11 +28,11 @@ public class EventListener implements Listener {
 
         if (plugin.getConfig().contains("claims." + player.getUniqueId() + ".particles")) {
             String showing = plugin.getConfig().getString("claims." + player.getUniqueId() + ".particles");
-            if (showing == "show") {
+            if (showing.equalsIgnoreCase("show")) {
                 SuperFactions.particlesShow.put(player.getName(), 2);
-            } else if (showing == "hide") {
+            } else if (showing.equalsIgnoreCase("hide")) {
                 SuperFactions.particlesShow.put(player.getName(), 0);
-            } else if(showing == "minimal") {
+            } else if(showing.equalsIgnoreCase("minimal")) {
                 SuperFactions.particlesShow.put(player.getName(), 8);
             } else {
                 SuperFactions.particlesShow.put(player.getName(), 2);
@@ -44,8 +40,6 @@ public class EventListener implements Listener {
         } else {
             SuperFactions.particlesShow.put(player.getName(), 2);
         }
-
-        SuperFactions.getShopNPC().forceShowNPC(player);
     }
 
     @EventHandler
@@ -56,14 +50,6 @@ public class EventListener implements Listener {
             SuperFactions.getEconomy().saveEconomy(offlinePlayer);
         } else {
             SuperFactions.getLog().severe("Unable to get a player account! PlayerQuitEvent");
-        }
-    }
-
-    @EventHandler
-    public void onNPCInteract(NPCInteractEvent event) {
-        if (event.getNPC().getId().equalsIgnoreCase(plugin.getShopNPC().getNPCID())) {
-            event.getWhoClicked().sendMessage(ChatColor.AQUA + "Welcome to the shop!");
-            ShopGUI.openShop(event.getWhoClicked());
         }
     }
 

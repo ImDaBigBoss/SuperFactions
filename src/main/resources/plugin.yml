@@ -1,7 +1,7 @@
 name: SuperFactions
 version: ${project.version}
 main: com.github.imdabigboss.superfactions.SuperFactions
-api-version: 1.16
+api-version: 1.17
 
 softdepend:
   - Vault
@@ -14,19 +14,23 @@ commands:
   balance:
     description: Get your balance
     usage: /balance
+    permission: superfactions.normal
   money:
     description: Make transactions
     usage: /money
+    permission: superfactions.normal
   shop:
     description: The shop command
     usage: /shop [setpos]
-    permission: superfactions.admin
+    permission: superfactions.normal
   dailycrate:
     description: Get a daily crate every set amount of time
     usage: /dailycrate
+    permission: superfactions.normal
   opencrate:
     description: Open a previously claimed crate
     usage: /opencrate
+    permission: superfactions.normal
   givecrate:
     description: Give a player a crate
     usage: /givecrate
@@ -34,8 +38,12 @@ commands:
   claim:
     description: Manage claimed chunks
     usage: /claim
+    permission: superfactions.normal
 
 permissions:
   superfactions.admin:
     default: op
     description: If a player has admin permissions
+  superfactions.normal:
+    default: true
+    description: If a player has normal permissions

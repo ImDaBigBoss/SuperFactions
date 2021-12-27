@@ -40,21 +40,24 @@ public class ShopGUI {
             Material.WARPED_STEM, Material.CRIMSON_STEM, Material.WARPED_PLANKS, Material.CRIMSON_PLANKS,
             Material.WARPED_ROOTS, Material.CRIMSON_ROOTS, Material.WARPED_FUNGUS, Material.CRIMSON_FUNGUS,
             Material.WARPED_WART_BLOCK, Material.WARPED_NYLIUM, Material.CRIMSON_NYLIUM, Material.BASALT,
-            Material.POLISHED_BASALT, Material.BLACKSTONE, Material.POLISHED_BLACKSTONE, Material.CRYING_OBSIDIAN,
-            Material.GILDED_BLACKSTONE, Material.SHROOMLIGHT, Material.SOUL_SOIL, Material.SOUL_SAND,
-            Material.TWISTING_VINES, Material.WEEPING_VINES, Material.NETHER_BRICK, Material.NETHER_BRICKS,
-            Material.NETHERRACK
+            Material.POLISHED_BASALT, Material.SMOOTH_BASALT, Material.BLACKSTONE, Material.POLISHED_BLACKSTONE,
+            Material.CRYING_OBSIDIAN, Material.GILDED_BLACKSTONE, Material.SHROOMLIGHT, Material.SOUL_SOIL,
+            Material.SOUL_SAND, Material.TWISTING_VINES, Material.WEEPING_VINES, Material.NETHER_BRICK,
+            Material.NETHER_BRICKS, Material.NETHERRACK
     };
 
     private static final Material[] buildingItems = {
             Material.STONE, Material.COBBLESTONE, Material.ANDESITE, Material.GRANITE, Material.DIORITE, Material.GRAVEL,
             Material.STONE_BRICKS, Material.MOSSY_STONE_BRICKS, Material.MOSSY_COBBLESTONE, Material.CRACKED_STONE_BRICKS,
-            Material.SMOOTH_STONE, Material.GRASS_BLOCK, Material.PODZOL, Material.DIRT,
+            Material.SMOOTH_STONE, Material.GRASS_BLOCK, Material.PODZOL, Material.DIRT, Material.DIRT_PATH,
+            Material.DEEPSLATE, Material.DEEPSLATE_BRICKS, Material.DEEPSLATE_TILES, Material.CHISELED_DEEPSLATE, Material.POLISHED_DEEPSLATE,
             Material.OAK_LOG, Material.OAK_PLANKS, Material.SPRUCE_LOG, Material.SPRUCE_PLANKS,
             Material.BIRCH_LOG, Material.BIRCH_PLANKS, Material.JUNGLE_LOG, Material.JUNGLE_PLANKS,
             Material.ACACIA_LOG, Material.ACACIA_PLANKS, Material.DARK_OAK_LOG, Material.DARK_OAK_PLANKS,
             Material.WARPED_STEM, Material.WARPED_PLANKS, Material.CRIMSON_STEM, Material.CRIMSON_PLANKS,
-            Material.GLASS, Material.GLASS_PANE, Material.SAND, Material.SANDSTONE, Material.OBSIDIAN
+            Material.GLASS, Material.GLASS_PANE, Material.SAND, Material.SANDSTONE, Material.OBSIDIAN,
+            Material.COPPER_BLOCK, Material.EXPOSED_COPPER, Material.WEATHERED_COPPER, Material.OXIDIZED_COPPER,
+            Material.CUT_COPPER, Material.EXPOSED_CUT_COPPER, Material.WEATHERED_CUT_COPPER, Material.OXIDIZED_CUT_COPPER
     };
 
     private static final Material[] redstoneItems = {
@@ -64,7 +67,7 @@ public class ShopGUI {
             Material.TARGET, Material.COMPARATOR, Material.REPEATER, Material.HOPPER,
             Material.RAIL, Material.POWERED_RAIL, Material.ACTIVATOR_RAIL, Material.DETECTOR_RAIL,
             Material.TRAPPED_CHEST, Material.DAYLIGHT_DETECTOR, Material.TNT, Material.SLIME_BLOCK,
-            Material.HONEY_BLOCK
+            Material.HONEY_BLOCK, Material.LIGHTNING_ROD
     };
 
     private static final Material[] decorationItems = {
@@ -74,6 +77,9 @@ public class ShopGUI {
             Material.ROSE_BUSH, Material.PEONY, Material.BLUE_ORCHID, Material.ALLIUM,
             Material.AZURE_BLUET, Material.RED_TULIP, Material.ORANGE_TULIP, Material.WHITE_TULIP,
             Material.PINK_TULIP, Material.LILY_OF_THE_VALLEY, Material.FLOWER_POT, Material.SWEET_BERRIES,
+            Material.AZALEA, Material.FLOWERING_AZALEA, Material.AZALEA_LEAVES, Material.FLOWERING_AZALEA_LEAVES,
+            Material.MOSS_CARPET, Material.MOSS_BLOCK, Material.ROOTED_DIRT, Material.HANGING_ROOTS,
+            Material.SPORE_BLOSSOM, Material.BIG_DRIPLEAF, Material.SMALL_DRIPLEAF, Material.GLOW_LICHEN,
             Material.WHITE_BANNER, Material.ORANGE_BANNER, Material.MAGENTA_BANNER, Material.LIGHT_BLUE_BANNER,
             Material.YELLOW_BANNER, Material.LIME_BANNER, Material.PINK_BANNER, Material.GRAY_BANNER,
             Material.LIGHT_GRAY_BANNER, Material.CYAN_BANNER, Material.PURPLE_BANNER, Material.BLUE_BANNER,
@@ -83,7 +89,8 @@ public class ShopGUI {
             Material.ANVIL, Material.BLAST_FURNACE, Material.BARREL, Material.CHEST,
             Material.CARTOGRAPHY_TABLE, Material.FLETCHING_TABLE, Material.SMOKER, Material.STONECUTTER,
             Material.FURNACE, Material.CRAFTING_TABLE, Material.JUKEBOX, Material.GRINDSTONE,
-            Material.PAINTING, Material.BELL, Material.CAMPFIRE, Material.SOUL_CAMPFIRE
+            Material.PAINTING, Material.BELL, Material.CAMPFIRE, Material.SOUL_CAMPFIRE,
+            Material.ITEM_FRAME, Material.GLOW_ITEM_FRAME
     };
 
     private static final Material[] colouredItems = {
@@ -110,11 +117,17 @@ public class ShopGUI {
             Material.WHITE_DYE, Material.ORANGE_DYE, Material.MAGENTA_DYE, Material.LIGHT_BLUE_DYE,
             Material.YELLOW_DYE, Material.LIME_DYE, Material.PINK_DYE, Material.GRAY_DYE,
             Material.LIGHT_GRAY_DYE, Material.CYAN_DYE, Material.PURPLE_DYE, Material.BLUE_DYE,
-            Material.BROWN_DYE, Material.GREEN_DYE, Material.RED_DYE, Material.BLACK_DYE
+            Material.BROWN_DYE, Material.GREEN_DYE, Material.RED_DYE, Material.BLACK_DYE,
+            Material.CANDLE, Material.WHITE_CANDLE, Material.ORANGE_CANDLE, Material.MAGENTA_CANDLE, Material.LIGHT_BLUE_CANDLE,
+            Material.YELLOW_CANDLE, Material.LIME_CANDLE, Material.PINK_CANDLE, Material.GRAY_CANDLE,
+            Material.LIGHT_GRAY_CANDLE, Material.CYAN_CANDLE, Material.PURPLE_CANDLE, Material.BLUE_CANDLE,
+            Material.BROWN_CANDLE, Material.GREEN_CANDLE, Material.RED_CANDLE, Material.BLACK_CANDLE
     };
 
     private static final Material[] mineralItems = {
-            Material.IRON_INGOT, Material.IRON_BLOCK, Material.GOLD_INGOT, Material.GOLD_BLOCK,
+            Material.IRON_INGOT, Material.RAW_IRON, Material.IRON_BLOCK, Material.COPPER_INGOT,
+            Material.RAW_COPPER, Material.COPPER_BLOCK, Material.GOLD_INGOT, Material.RAW_GOLD,
+            Material.GOLD_BLOCK, Material.AMETHYST_SHARD, Material.AMETHYST_CLUSTER,
             Material.DIAMOND, Material.DIAMOND_BLOCK, Material.LAPIS_LAZULI, Material.LAPIS_BLOCK,
             Material.COAL, Material.COAL_BLOCK, Material.NETHERITE_INGOT, Material.NETHERITE_BLOCK,
             Material.QUARTZ, Material.QUARTZ_BLOCK
@@ -130,14 +143,15 @@ public class ShopGUI {
             Material.PORKCHOP, Material.COOKED_PORKCHOP, Material.MUTTON, Material.COOKED_MUTTON,
             Material.RABBIT, Material.COOKED_RABBIT, Material.BROWN_MUSHROOM, Material.RED_MUSHROOM,
             Material.MUSHROOM_STEW, Material.OAK_SAPLING, Material.SPRUCE_SAPLING, Material.BIRCH_SAPLING,
-            Material.JUNGLE_SAPLING, Material.ACACIA_SAPLING, Material.DARK_OAK_SAPLING
+            Material.JUNGLE_SAPLING, Material.ACACIA_SAPLING, Material.DARK_OAK_SAPLING, Material.GLOW_BERRIES
     };
 
     private static final Material[] mobDropItems = {
             Material.BONE, Material.ARROW, Material.GUNPOWDER, Material.STRING, Material.FEATHER,
             Material.RABBIT_FOOT, Material.SPIDER_EYE, Material.EGG, Material.SLIME_BALL,
             Material.INK_SAC, Material.BLAZE_ROD, Material.ENDER_PEARL, Material.PHANTOM_MEMBRANE,
-            Material.MAGMA_CREAM, Material.ROTTEN_FLESH, Material.GHAST_TEAR, Material.LEATHER
+            Material.MAGMA_CREAM, Material.ROTTEN_FLESH, Material.GHAST_TEAR, Material.LEATHER,
+            Material.GLOW_INK_SAC
     };
 
     private static final Material[] miscItems = {

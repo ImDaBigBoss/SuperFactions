@@ -1,14 +1,10 @@
-version: 1.4
+version: 1.5
 
 currencyPrefix: '$'
 currencySuffix: ''
 
 currencyName: 'dollar'
 currencyNamePlural: 'dollars'
-
-shopNPCSkin: 1949474697
-shopNPCName: Merchant
-shopSellPercentage: 0.45 #The percentage of the buy price to sell items to the shop
 
 enableCrates: true
 dailyCrateCooldown: 86400000 #24h in milliseconds

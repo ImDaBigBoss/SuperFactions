@@ -2,6 +2,7 @@ package com.github.imdabigboss.superfactions;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
+
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;

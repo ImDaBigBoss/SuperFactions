@@ -2,16 +2,13 @@ package com.github.imdabigboss.superfactions.commands;
 
 import com.github.imdabigboss.superfactions.SuperFactions;
 
-import jdk.nashorn.internal.runtime.regexp.joni.encoding.CharacterType;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MoneyCommand implements CommandExecutor, TabExecutor {
     private SuperFactions plugin;

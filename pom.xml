@@ -6,7 +6,7 @@
 
     <groupId>com.github.imdabigboss</groupId>
     <artifactId>superfactions</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
     <packaging>jar</packaging>
 
     <name>SuperFactions</name>
@@ -36,10 +36,6 @@
                     <relocations>
                         <relocation>
                             <pattern>de.themoep</pattern>
-                            <shadedPattern>com.github.imdabigboss.superfactions.libs</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>net.jitse.npclib</pattern>
                             <shadedPattern>com.github.imdabigboss.superfactions.libs</shadedPattern>
                         </relocation>
                     </relocations>
@@ -92,24 +88,13 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>de.themoep</groupId>
             <artifactId>inventorygui</artifactId>
             <version>1.4.3-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.jitse</groupId>
-            <artifactId>npclib-api</artifactId>
-            <version>2.11.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency><dependency>
-            <groupId>net.jitse</groupId>
-            <artifactId>npclib-plugin</artifactId>
-            <version>2.11.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
